@@ -190,6 +190,14 @@ public:
 	unsigned char m_Delay;
 };
 
+class CSwitchTileOld
+{
+public:
+	unsigned char m_Number;
+	unsigned char m_Type;
+	unsigned char m_Flags;
+};
+
 struct CMapItemImage
 {
 	int m_Version;

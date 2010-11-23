@@ -275,6 +275,7 @@ public:
 	class CLayerSpeedup *m_pSpeedupLayer;
 	class CLayerFront *m_pFrontLayer;
 	class CLayerSwitch *m_pSwitchLayer;
+	class CLayerSwitchOld *m_pSwitchLayerOld;
 	CLayerGroup *m_pGameGroup;
 	
 	CEnvelope *NewEnvelope(int Channels)
@@ -332,6 +333,7 @@ public:
 	void MakeSpeedupLayer(CLayer *pLayer);
 	void MakeFrontLayer(CLayer *pLayer);
 	void MakeSwitchLayer(CLayer *pLayer);
+	void MakeSwitchLayerOld(CLayer *pLayer);
 };
 
 
@@ -490,6 +492,20 @@ public:
 	~CLayerSwitch();
 
 	CSwitchTile *m_pSwitchTile;
+
+	virtual void Resize(int NewW, int NewH);
+	virtual void Shift(int Direction);
+	virtual void BrushDraw(CLayer *pBrush, float wx, float wy);
+	virtual void FillSelection(bool Empty, CLayer *pBrush, CUIRect Rect);
+};
+
+class CLayerSwitchOld : public CLayerTiles
+{
+public:
+	CLayerSwitchOld(int w, int h);
+	~CLayerSwitchOld();
+
+	CSwitchTileOld *m_pSwitchTile;
 
 	virtual void Resize(int NewW, int NewH);
 	virtual void Shift(int Direction);
