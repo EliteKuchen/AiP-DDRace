@@ -121,7 +121,7 @@ void CCharacterCore::Tick(bool UseInput)
 		m_Angle = (int)(a*256.0f);
 
 		// handle jump
-		if(m_Input.m_Jump)
+		if(m_Input.m_Jump && !m_FrozenTicks)
 		{
 			if(!(m_Jumped&1))
 			{
@@ -143,7 +143,7 @@ void CCharacterCore::Tick(bool UseInput)
 			m_Jumped &= ~1;
 
 		// handle hook
-		if(m_Input.m_Hook)
+		if(m_Input.m_Hook && !m_FrozenTicks)
 		{
 			if(m_HookState == HOOK_IDLE)
 			{
@@ -163,12 +163,15 @@ void CCharacterCore::Tick(bool UseInput)
 		}		
 	}
 	
+	if(m_FrozenTicks)
+		m_Direction = 0;
+	
 	// add the speed modification according to players wanted direction
-	if(!m_FrozenTicks &&m_Direction < 0)
+	if(m_Direction < 0)
 		m_Vel.x = SaturatedAdd(-MaxSpeed, MaxSpeed, m_Vel.x, -Accel);
-	if(!m_FrozenTicks &&m_Direction > 0)
+	if(m_Direction > 0)
 		m_Vel.x = SaturatedAdd(-MaxSpeed, MaxSpeed, m_Vel.x, Accel);
-	if(m_Direction == 0 || m_FrozenTicks)
+	if(m_Direction == 0)
 		m_Vel.x *= Friction;
 	
 	// handle jumping
@@ -391,6 +394,7 @@ void CCharacterCore::Write(CNetObj_CharacterCore *pObjCore)
 	pObjCore->m_Jumped = m_Jumped;
 	pObjCore->m_Direction = m_Direction;
 	pObjCore->m_Angle = m_Angle;
+	pObjCore->m_FrozenTicks = m_FrozenTicks;
 }
 
 void CCharacterCore::Read(const CNetObj_CharacterCore *pObjCore)
@@ -409,6 +413,7 @@ void CCharacterCore::Read(const CNetObj_CharacterCore *pObjCore)
 	m_Jumped = pObjCore->m_Jumped;
 	m_Direction = pObjCore->m_Direction;
 	m_Angle = pObjCore->m_Angle;
+	m_FrozenTicks = pObjCore->m_FrozenTicks;
 }
 
 void CCharacterCore::Quantize()
