@@ -13,7 +13,6 @@ class CCollision
 	class CLayers *m_pLayers;
 
 	bool IsTileSolid(int x, int y);
-	int GetTile(int x, int y);
 
 public:
 	enum
@@ -21,9 +20,11 @@ public:
 		COLFLAG_SOLID=1,
 		COLFLAG_DEATH=2,
 		COLFLAG_NOHOOK=4,
+		COLFLAG_FREEZE=8,
 	};
 
 	CCollision();
+	int GetTile(int x, int y);
 	void Init(class CLayers *pLayers);
 	bool CheckPoint(float x, float y) { return IsTileSolid(round(x), round(y)); }
 	bool CheckPoint(vec2 p) { return CheckPoint(p.x, p.y); }

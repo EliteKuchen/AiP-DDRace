@@ -59,6 +59,7 @@ void CCharacterCore::Init(CWorldCore *pWorld, CCollision *pCollision)
 {
 	m_pWorld = pWorld;
 	m_pCollision = pCollision;
+	m_FrozenTicks = 0;
 }
 
 void CCharacterCore::Reset()
@@ -72,6 +73,8 @@ void CCharacterCore::Reset()
 	m_HookedPlayer = -1;
 	m_Jumped = 0;
 	m_TriggeredEvents = 0;
+
+	m_FrozenTicks = 0;
 }
 
 void CCharacterCore::Tick(bool UseInput)
@@ -93,7 +96,13 @@ void CCharacterCore::Tick(bool UseInput)
 	float MaxSpeed = Grounded ? m_pWorld->m_Tuning.m_GroundControlSpeed : m_pWorld->m_Tuning.m_AirControlSpeed;
 	float Accel = Grounded ? m_pWorld->m_Tuning.m_GroundControlAccel : m_pWorld->m_Tuning.m_AirControlAccel;
 	float Friction = Grounded ? m_pWorld->m_Tuning.m_GroundFriction : m_pWorld->m_Tuning.m_AirFriction;
-	
+
+	if(m_pCollision->GetTile(m_Pos.x,m_Pos.y) == CCollision::COLFLAG_FREEZE)
+		m_FrozenTicks = 3 * SERVER_TICK_SPEED;
+
+	if(m_FrozenTicks)
+	 	m_FrozenTicks--;
+
 	// handle input
 	if(UseInput)
 	{
@@ -155,11 +164,11 @@ void CCharacterCore::Tick(bool UseInput)
 	}
 	
 	// add the speed modification according to players wanted direction
-	if(m_Direction < 0)
+	if(!m_FrozenTicks &&m_Direction < 0)
 		m_Vel.x = SaturatedAdd(-MaxSpeed, MaxSpeed, m_Vel.x, -Accel);
-	if(m_Direction > 0)
+	if(!m_FrozenTicks &&m_Direction > 0)
 		m_Vel.x = SaturatedAdd(-MaxSpeed, MaxSpeed, m_Vel.x, Accel);
-	if(m_Direction == 0)
+	if(m_Direction == 0 || m_FrozenTicks)
 		m_Vel.x *= Friction;
 	
 	// handle jumping
