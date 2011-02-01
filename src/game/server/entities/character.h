@@ -125,11 +125,15 @@ private:
 	// the player core for the physics	
 	CCharacterCore m_Core;
 	
+	CFreezeCore m_FreezeCore;
+
 	// info for dead reckoning
 	int m_ReckoningTick; // tick that we are performing dead reckoning From
 	CCharacterCore m_SendCore; // core that we should send
 	CCharacterCore m_ReckoningCore; // the dead reckoning core
 
+	CFreezeCore m_SendFreezeCore;
+	CFreezeCore m_ReckoningFreezeCore;
 };
 
 #endif

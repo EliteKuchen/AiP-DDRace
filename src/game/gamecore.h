@@ -166,10 +166,12 @@ public:
 	CWorldCore()
 	{
 		mem_zero(m_apCharacters, sizeof(m_apCharacters));
+		mem_zero(m_apFreeze, sizeof(m_apFreeze));
 	}
 	
 	CTuningParams m_Tuning;
 	class CCharacterCore *m_apCharacters[MAX_CLIENTS];
+	class CFreezeCore *m_apFreeze[MAX_CLIENTS];
 };
 
 class CCharacterCore
@@ -194,13 +196,29 @@ public:
 	
 	int m_TriggeredEvents;
 	
-	void Init(CWorldCore *pWorld, CCollision *pCollision);
+	void Init(CWorldCore *pWorld, CCollision *pCollision, int ClientID);
 	void Reset();
-	void Tick(bool UseInput);
+	void Tick(bool UseInput, CFreezeCore* pFreeze);
 	void Move();
 	
 	void Read(const CNetObj_CharacterCore *pObjCore);
 	void Write(CNetObj_CharacterCore *pObjCore);
+	void Quantize();
+
+	int m_ClientID;
+};
+
+class CFreezeCore
+{
+	CWorldCore *m_pWorld;
+	CCollision *m_pCollision;
+public:
+	void Init(CWorldCore *pWorld, CCollision *pCollision);
+	void Reset();
+	void Tick(vec2 Pos);
+
+	void Read(const CNetObj_FreezeCore *pObjCore);
+	void Write(CNetObj_FreezeCore *pObjCore);
 	void Quantize();
 
 	int m_FrozenTicks;

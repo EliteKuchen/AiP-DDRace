@@ -65,13 +65,19 @@ bool CCharacter::Spawn(CPlayer *pPlayer, vec2 Pos)
 	m_Pos = Pos;
 	
 	m_Core.Reset();
-	m_Core.Init(&GameServer()->m_World.m_Core, GameServer()->Collision());
+	m_Core.Init(&GameServer()->m_World.m_Core, GameServer()->Collision(), pPlayer->GetCID());
 	m_Core.m_Pos = m_Pos;
 	GameServer()->m_World.m_Core.m_apCharacters[m_pPlayer->GetCID()] = &m_Core;
+
+	m_FreezeCore.Reset();
+	m_FreezeCore.Init(&GameServer()->m_World.m_Core, GameServer()->Collision());
+	GameServer()->m_World.m_Core.m_apFreeze[m_pPlayer->GetCID()] = &m_FreezeCore;
 
 	m_ReckoningTick = 0;
 	mem_zero(&m_SendCore, sizeof(m_SendCore));
 	mem_zero(&m_ReckoningCore, sizeof(m_ReckoningCore));
+	mem_zero(&m_SendFreezeCore, sizeof(m_SendFreezeCore));
+	mem_zero(&m_ReckoningFreezeCore, sizeof(m_ReckoningFreezeCore));
 	
 	GameServer()->m_World.InsertEntity(this);
 	m_Alive = true;
@@ -84,6 +90,7 @@ bool CCharacter::Spawn(CPlayer *pPlayer, vec2 Pos)
 void CCharacter::Destroy()
 {
 	GameServer()->m_World.m_Core.m_apCharacters[m_pPlayer->GetCID()] = 0;
+	GameServer()->m_World.m_Core.m_apFreeze[m_pPlayer->GetCID()] = 0;
 	m_Alive = false;
 }
 
@@ -544,7 +551,7 @@ void CCharacter::Tick()
 	}
 
 	m_Core.m_Input = m_Input;
-	m_Core.Tick(true);
+	m_Core.Tick(true, &m_FreezeCore);
 	
 	// handle death-tiles and leaving gamelayer
 	if(GameServer()->Collision()->GetCollisionAt(m_Pos.x+m_ProximityRadius/3.f, m_Pos.y-m_ProximityRadius/3.f)&CCollision::COLFLAG_DEATH ||
@@ -571,10 +578,12 @@ void CCharacter::TickDefered()
 	// advance the dummy
 	{
 		CWorldCore TempWorld;
-		m_ReckoningCore.Init(&TempWorld, GameServer()->Collision());
-		m_ReckoningCore.Tick(false);
+		m_ReckoningCore.Init(&TempWorld, GameServer()->Collision(), m_pPlayer->GetCID());
+		m_ReckoningFreezeCore.Init(&TempWorld, GameServer()->Collision());
+		m_ReckoningCore.Tick(false, &m_ReckoningFreezeCore);
 		m_ReckoningCore.Move();
 		m_ReckoningCore.Quantize();
+		m_ReckoningFreezeCore.Quantize();
 	}
 	
 	//lastsentcore
@@ -639,12 +648,22 @@ void CCharacter::TickDefered()
 		m_ReckoningCore.Write(&Predicted);
 		m_Core.Write(&Current);
 
+		CNetObj_FreezeCore FreezePredicted;
+		CNetObj_FreezeCore FreezeCurrent;
+		mem_zero(&FreezePredicted, sizeof(FreezePredicted));
+		mem_zero(&FreezeCurrent, sizeof(FreezeCurrent));
+		m_ReckoningFreezeCore.Write(&FreezePredicted);
+		m_FreezeCore.Write(&FreezeCurrent);
+
 		// only allow dead reackoning for a top of 3 seconds
 		if(m_ReckoningTick+Server()->TickSpeed()*3 < Server()->Tick() || mem_comp(&Predicted, &Current, sizeof(CNetObj_Character)) != 0)
 		{
 			m_ReckoningTick = Server()->Tick();
 			m_SendCore = m_Core;
 			m_ReckoningCore = m_Core;
+
+			m_SendFreezeCore = m_FreezeCore;
+			m_ReckoningFreezeCore = m_FreezeCore;
 		}
 	}
 }
@@ -692,6 +711,7 @@ void CCharacter::Die(int Killer, int Weapon)
 	m_Alive = false;
 	GameServer()->m_World.RemoveEntity(this);
 	GameServer()->m_World.m_Core.m_apCharacters[m_pPlayer->GetCID()] = 0;
+	GameServer()->m_World.m_Core.m_apFreeze[m_pPlayer->GetCID()] = 0;
 	GameServer()->CreateDeath(m_Pos, m_pPlayer->GetCID());
 	
 	// we got to wait 0.5 secs before respawning
@@ -789,6 +809,18 @@ void CCharacter::Snap(int SnappingClient)
 	if(NetworkClipped(SnappingClient))
 		return;
 	
+	if(SnappingClient == 0) // only for testing | here should be a check if the snapping client is supporting freeze
+	{
+		CNetObj_FreezeCore *pFreeze = static_cast<CNetObj_FreezeCore *>(Server()->SnapNewItem(NETOBJTYPE_FREEZECORE, m_pPlayer->GetCID(), sizeof(CNetObj_FreezeCore)));
+		if(!pFreeze)
+			return;
+
+		if(!m_ReckoningTick || GameServer()->m_World.m_Paused)
+			m_FreezeCore.Write(pFreeze);
+		else
+			m_SendFreezeCore.Write(pFreeze);
+	}
+
 	CNetObj_Character *pCharacter = static_cast<CNetObj_Character *>(Server()->SnapNewItem(NETOBJTYPE_CHARACTER, m_pPlayer->GetCID(), sizeof(CNetObj_Character)));
 	if(!pCharacter)
 		return;

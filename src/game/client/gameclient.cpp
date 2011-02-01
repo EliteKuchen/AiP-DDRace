@@ -410,23 +410,29 @@ void CGameClient::UpdateLocalCharacterPos()
 }
 
 
-static void Evolve(CNetObj_Character *pCharacter, int Tick)
+static void Evolve(CNetObj_Character *pCharacter, CNetObj_FreezeCore *pFreeze, int Tick, int ClientID)
 {
 	CWorldCore TempWorld;
 	CCharacterCore TempCore;
+	CFreezeCore TempFreezeCore;
 	mem_zero(&TempCore, sizeof(TempCore));
-	TempCore.Init(&TempWorld, g_GameClient.Collision());
-	TempCore.Read(pCharacter);
+	mem_zero(&TempFreezeCore, sizeof(TempFreezeCore));
 	
+	TempCore.Init(&TempWorld, g_GameClient.Collision(), ClientID);
+	TempCore.Read(pCharacter);
+	TempFreezeCore.Init(&TempWorld, g_GameClient.Collision());
+	TempFreezeCore.Read(pFreeze);
+
 	while(pCharacter->m_Tick < Tick)
 	{
 		pCharacter->m_Tick++;
-		TempCore.Tick(false);
+		TempCore.Tick(false, &TempFreezeCore);
 		TempCore.Move();
 		TempCore.Quantize();
 	}
 
 	TempCore.Write(pCharacter);
+	TempFreezeCore.Write(pFreeze);
 }
 
 
@@ -777,9 +783,18 @@ void CGameClient::OnNewSnapshot()
 					m_Snap.m_aCharacters[Item.m_Id].m_Cur = *((const CNetObj_Character *)pData);
 
 					if(m_Snap.m_aCharacters[Item.m_Id].m_Prev.m_Tick)
-						Evolve(&m_Snap.m_aCharacters[Item.m_Id].m_Prev, Client()->PrevGameTick());
+						Evolve(&m_Snap.m_aCharacters[Item.m_Id].m_Prev, &m_Snap.m_aCharacters[Item.m_Id].m_FreezePrev, Client()->PrevGameTick(), Item.m_Id);
 					if(m_Snap.m_aCharacters[Item.m_Id].m_Cur.m_Tick)
-						Evolve(&m_Snap.m_aCharacters[Item.m_Id].m_Cur, Client()->GameTick());
+						Evolve(&m_Snap.m_aCharacters[Item.m_Id].m_Cur, &m_Snap.m_aCharacters[Item.m_Id].m_FreezeCur, Client()->GameTick(), Item.m_Id);
+				}
+			}
+			else if(Item.m_Type == NETOBJTYPE_FREEZECORE)
+			{
+				const void *pOld = Client()->SnapFindItem(IClient::SNAP_PREV, NETOBJTYPE_FREEZECORE, Item.m_Id);
+				if(pOld)
+				{
+					m_Snap.m_aCharacters[Item.m_Id].m_FreezePrev = *((const CNetObj_FreezeCore *)pOld);
+					m_Snap.m_aCharacters[Item.m_Id].m_FreezeCur = *((const CNetObj_FreezeCore *)pData);
 				}
 			}
 			else if(Item.m_Type == NETOBJTYPE_GAME)
@@ -876,9 +891,13 @@ void CGameClient::OnPredict()
 		if(!m_Snap.m_aCharacters[i].m_Active)
 			continue;
 			
-		g_GameClient.m_aClients[i].m_Predicted.Init(&World, Collision());
+		g_GameClient.m_aClients[i].m_Predicted.Init(&World, Collision(), i);
 		World.m_apCharacters[i] = &g_GameClient.m_aClients[i].m_Predicted;
 		g_GameClient.m_aClients[i].m_Predicted.Read(&m_Snap.m_aCharacters[i].m_Cur);
+
+		g_GameClient.m_aClients[i].m_FreezePredicted.Init(&World, Collision());
+		World.m_apFreeze[i] = &g_GameClient.m_aClients[i].m_FreezePredicted;
+		g_GameClient.m_aClients[i].m_FreezePredicted.Read(&m_Snap.m_aCharacters[i].m_FreezeCur);
 	}
 	
 	// predict
@@ -901,10 +920,10 @@ void CGameClient::OnPredict()
 				int *pInput = Client()->GetInput(Tick);
 				if(pInput)
 					World.m_apCharacters[c]->m_Input = *((CNetObj_PlayerInput*)pInput);
-				World.m_apCharacters[c]->Tick(true);
+				World.m_apCharacters[c]->Tick(true, World.m_apFreeze[c]);
 			}
 			else
-				World.m_apCharacters[c]->Tick(false);
+				World.m_apCharacters[c]->Tick(false, World.m_apFreeze[c]);
 
 		}
 

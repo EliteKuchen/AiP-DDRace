@@ -133,8 +133,6 @@ Objects = [
 		NetIntAny("m_HookY"),
 		NetIntAny("m_HookDx"),
 		NetIntAny("m_HookDy"),
-        
-        NetIntAny("m_FrozenTicks"),
 	]),
 
 	NetObject("Character:CharacterCore", [
@@ -198,6 +196,10 @@ Objects = [
 
 	NetEvent("DamageInd:Common", [
 		NetIntAny("m_Angle"),
+	]),
+
+	NetObject("FreezeCore", [
+		NetIntAny("m_FrozenTicks"),
 	]),
 ]
 

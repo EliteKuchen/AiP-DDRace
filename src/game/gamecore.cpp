@@ -55,11 +55,11 @@ float VelocityRamp(float Value, float Start, float Range, float Curvature)
 	return 1.0f/powf(Curvature, (Value-Start)/Range);
 }
 
-void CCharacterCore::Init(CWorldCore *pWorld, CCollision *pCollision)
+void CCharacterCore::Init(CWorldCore *pWorld, CCollision *pCollision, int ClientID)
 {
 	m_pWorld = pWorld;
 	m_pCollision = pCollision;
-	m_FrozenTicks = 0;
+	m_ClientID = ClientID;
 }
 
 void CCharacterCore::Reset()
@@ -73,11 +73,9 @@ void CCharacterCore::Reset()
 	m_HookedPlayer = -1;
 	m_Jumped = 0;
 	m_TriggeredEvents = 0;
-
-	m_FrozenTicks = 0;
 }
 
-void CCharacterCore::Tick(bool UseInput)
+void CCharacterCore::Tick(bool UseInput, CFreezeCore *pFreeze)
 {
 	float PhysSize = 28.0f;
 	m_TriggeredEvents = 0;
@@ -97,11 +95,12 @@ void CCharacterCore::Tick(bool UseInput)
 	float Accel = Grounded ? m_pWorld->m_Tuning.m_GroundControlAccel : m_pWorld->m_Tuning.m_AirControlAccel;
 	float Friction = Grounded ? m_pWorld->m_Tuning.m_GroundFriction : m_pWorld->m_Tuning.m_AirFriction;
 
-	if(m_pCollision->GetTile(m_Pos.x,m_Pos.y) == CCollision::COLFLAG_FREEZE)
-		m_FrozenTicks = 3 * SERVER_TICK_SPEED;
-
-	if(m_FrozenTicks)
-	 	m_FrozenTicks--;
+	int FrozenTicks = 0;
+	if(pFreeze)
+	{
+		pFreeze->Tick(m_Pos);
+		FrozenTicks = pFreeze->m_FrozenTicks;
+	}
 
 	// handle input
 	if(UseInput)
@@ -121,7 +120,7 @@ void CCharacterCore::Tick(bool UseInput)
 		m_Angle = (int)(a*256.0f);
 
 		// handle jump
-		if(m_Input.m_Jump && !m_FrozenTicks)
+		if(m_Input.m_Jump && !FrozenTicks)
 		{
 			if(!(m_Jumped&1))
 			{
@@ -143,7 +142,7 @@ void CCharacterCore::Tick(bool UseInput)
 			m_Jumped &= ~1;
 
 		// handle hook
-		if(m_Input.m_Hook && !m_FrozenTicks)
+		if(m_Input.m_Hook && !FrozenTicks)
 		{
 			if(m_HookState == HOOK_IDLE)
 			{
@@ -163,15 +162,12 @@ void CCharacterCore::Tick(bool UseInput)
 		}		
 	}
 	
-	if(m_FrozenTicks)
-		m_Direction = 0;
-	
 	// add the speed modification according to players wanted direction
-	if(m_Direction < 0)
+	if(!FrozenTicks && m_Direction < 0)
 		m_Vel.x = SaturatedAdd(-MaxSpeed, MaxSpeed, m_Vel.x, -Accel);
-	if(m_Direction > 0)
+	if(!FrozenTicks && m_Direction > 0)
 		m_Vel.x = SaturatedAdd(-MaxSpeed, MaxSpeed, m_Vel.x, Accel);
-	if(m_Direction == 0)
+	if(FrozenTicks || m_Direction == 0)
 		m_Vel.x *= Friction;
 	
 	// handle jumping
@@ -394,7 +390,6 @@ void CCharacterCore::Write(CNetObj_CharacterCore *pObjCore)
 	pObjCore->m_Jumped = m_Jumped;
 	pObjCore->m_Direction = m_Direction;
 	pObjCore->m_Angle = m_Angle;
-	pObjCore->m_FrozenTicks = m_FrozenTicks;
 }
 
 void CCharacterCore::Read(const CNetObj_CharacterCore *pObjCore)
@@ -413,7 +408,6 @@ void CCharacterCore::Read(const CNetObj_CharacterCore *pObjCore)
 	m_Jumped = pObjCore->m_Jumped;
 	m_Direction = pObjCore->m_Direction;
 	m_Angle = pObjCore->m_Angle;
-	m_FrozenTicks = pObjCore->m_FrozenTicks;
 }
 
 void CCharacterCore::Quantize()
@@ -423,3 +417,40 @@ void CCharacterCore::Quantize()
 	Read(&Core);
 }
 
+void CFreezeCore::Init(CWorldCore *pWorld, CCollision *pCollision)
+{
+	m_pWorld = pWorld;
+	m_pCollision = pCollision;
+	m_FrozenTicks = 0;
+}
+
+void CFreezeCore::Reset()
+{
+	m_FrozenTicks = 0;
+}
+
+void CFreezeCore::Tick(vec2 Pos)
+{
+	if(m_pCollision->GetTile(Pos.x, Pos.y) == CCollision::COLFLAG_FREEZE)
+		m_FrozenTicks = 3 * SERVER_TICK_SPEED;
+
+	if(m_FrozenTicks)
+	 	m_FrozenTicks--;
+}
+
+void CFreezeCore::Write(CNetObj_FreezeCore *pObjCore)
+{
+	pObjCore->m_FrozenTicks = m_FrozenTicks;
+}
+
+void CFreezeCore::Read(const CNetObj_FreezeCore *pObjCore)
+{
+	m_FrozenTicks = pObjCore->m_FrozenTicks;
+}
+
+void CFreezeCore::Quantize()
+{
+	CNetObj_FreezeCore Core;
+	Write(&Core);
+	Read(&Core);
+}

@@ -127,6 +127,9 @@ public:
 			CNetObj_Character m_Prev;
 			CNetObj_Character m_Cur;
 			
+			CNetObj_FreezeCore m_FreezePrev;
+			CNetObj_FreezeCore m_FreezeCur;
+
 			// interpolated position
 			vec2 m_Position;
 		};
@@ -151,6 +154,7 @@ public:
 		int m_Emoticon;
 		int m_EmoticonStart;
 		CCharacterCore m_Predicted;
+		CFreezeCore m_FreezePredicted;
 		
 		CTeeRenderInfo m_SkinInfo; // this is what the server reports
 		CTeeRenderInfo m_RenderInfo; // this is what we use
