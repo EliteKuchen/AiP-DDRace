@@ -123,7 +123,7 @@ void CSqlScore::Init()
 		{
 			// create tables
 			char aBuf[768];
-			str_format(aBuf, sizeof(aBuf), "CREATE TABLE IF NOT EXISTS %s_%s_race (Name VARCHAR(%d) NOT NULL, Timestamp TIMESTAMP, Time FLOAT DEFAULT 0, cp1 FLOAT DEFAULT 0, cp2 FLOAT DEFAULT 0, cp3 FLOAT DEFAULT 0, cp4 FLOAT DEFAULT 0, cp5 FLOAT DEFAULT 0, cp6 FLOAT DEFAULT 0, cp7 FLOAT DEFAULT 0, cp8 FLOAT DEFAULT 0, cp9 FLOAT DEFAULT 0, cp10 FLOAT DEFAULT 0, cp11 FLOAT DEFAULT 0, cp12 FLOAT DEFAULT 0, cp13 FLOAT DEFAULT 0, cp14 FLOAT DEFAULT 0, cp15 FLOAT DEFAULT 0, cp16 FLOAT DEFAULT 0, cp17 FLOAT DEFAULT 0, cp18 FLOAT DEFAULT 0, cp19 FLOAT DEFAULT 0, cp20 FLOAT DEFAULT 0, cp21 FLOAT DEFAULT 0, cp22 FLOAT DEFAULT 0, cp23 FLOAT DEFAULT 0, cp24 FLOAT DEFAULT 0, cp25 FLOAT DEFAULT 0) CHARACTER SET utf8 ;", m_pPrefix, m_aMap, MAX_NAME_LENGTH);
+			str_format(aBuf, sizeof(aBuf), "CREATE TABLE IF NOT EXISTS %s_%s_race (Name VARCHAR(%d) NOT NULL, Timestamp TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , Time FLOAT DEFAULT 0, cp1 FLOAT DEFAULT 0, cp2 FLOAT DEFAULT 0, cp3 FLOAT DEFAULT 0, cp4 FLOAT DEFAULT 0, cp5 FLOAT DEFAULT 0, cp6 FLOAT DEFAULT 0, cp7 FLOAT DEFAULT 0, cp8 FLOAT DEFAULT 0, cp9 FLOAT DEFAULT 0, cp10 FLOAT DEFAULT 0, cp11 FLOAT DEFAULT 0, cp12 FLOAT DEFAULT 0, cp13 FLOAT DEFAULT 0, cp14 FLOAT DEFAULT 0, cp15 FLOAT DEFAULT 0, cp16 FLOAT DEFAULT 0, cp17 FLOAT DEFAULT 0, cp18 FLOAT DEFAULT 0, cp19 FLOAT DEFAULT 0, cp20 FLOAT DEFAULT 0, cp21 FLOAT DEFAULT 0, cp22 FLOAT DEFAULT 0, cp23 FLOAT DEFAULT 0, cp24 FLOAT DEFAULT 0, cp25 FLOAT DEFAULT 0, KEY Name (Name))  CHARACTER SET utf8 ;", m_pPrefix, m_aMap, MAX_NAME_LENGTH);
 			m_pStatement->execute(aBuf);
 
 			// Check if table has new column with timestamp
@@ -132,9 +132,7 @@ void CSqlScore::Init()
 
 			if(m_pResults->rowsCount() < 1){
 				// If not... add the column
-				str_format(aBuf, sizeof(aBuf), "%s_%s_race has no column Timestamp, I will add it now",m_pPrefix, m_aMap);
-				dbg_msg("SQL",aBuf);
-				str_format(aBuf, sizeof(aBuf), "ALTER TABLE %s_%s_race ADD Timestamp TIMESTAMP AFTER Name",m_pPrefix, m_aMap);
+				str_format(aBuf, sizeof(aBuf), "ALTER TABLE %s_%s_race ADD Timestamp TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER Name, ADD INDEX(Name);",m_pPrefix, m_aMap);
 				dbg_msg("SQL",aBuf);
 				m_pStatement->execute(aBuf);
 			}
