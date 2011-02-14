@@ -709,7 +709,8 @@ void CGameContext::ConTogglePause(IConsole::IResult *pResult, void *pUserData, i
 		CCharacter* pChr = pPlayer->GetCharacter();
 		if(!pPlayer->GetTeam() && pChr && (!pChr->GetWeaponGot(WEAPON_NINJA) || pChr->m_FreezeTime) && pChr->IsGrounded() && pChr->m_Pos==pChr->m_PrevPos && !pChr->Team() && !pPlayer->m_InfoSaved)
 		{
-			if(pPlayer->m_Last_Pause + pSelf->Server()->TickSpeed() * g_Config.m_SvPauseFrequency <= pSelf->Server()->Tick()) {
+			if(pPlayer->m_Last_Pause + pSelf->Server()->TickSpeed() * g_Config.m_SvPauseFrequency <= pSelf->Server()->Tick()) 
+			{
 				pPlayer->SaveCharacter();
 				pPlayer->SetTeam(TEAM_SPECTATORS);
 				pPlayer->m_InfoSaved = true;
@@ -754,25 +755,23 @@ void CGameContext::ConTop5(IConsole::IResult *pResult, void *pUserData, int Clie
 #if defined(CONF_SQL)
 void CGameContext::ConLast5Times(IConsole::IResult *pResult, void *pUserData, int ClientID)
 {
-	if(g_Config.m_SvUseSQL){
+	if(g_Config.m_SvUseSQL)
+	{
 		CGameContext *pSelf = (CGameContext *)pUserData;
-		
-		CSqlScore *score = (CSqlScore *)pSelf->Score();
-
+		CSqlScore *pScore = (CSqlScore *)pSelf->Score();
 		CPlayer *pPlayer = pSelf->m_apPlayers[ClientID];
-
-
-				
-		if(pResult->NumArguments() > 0){
+		
+		if(pResult->NumArguments() > 0)
+		{
 			if (pResult->NumArguments() == 1)
-				score->ShowLast5Times(pPlayer->GetCID(), (str_comp(pResult->GetString(0), "me") == 0) ? pSelf->Server()->ClientName(ClientID) : pResult->GetString(0),1);
+				pScore->ShowLast5Times(pPlayer->GetCID(), (str_comp(pResult->GetString(0), "me") == 0) ? pSelf->Server()->ClientName(ClientID) : pResult->GetString(0),1);
 			else
-				score->ShowLast5Times(pPlayer->GetCID(), (str_comp(pResult->GetString(0), "me") == 0) ? pSelf->Server()->ClientName(ClientID) : pResult->GetString(0),pResult->GetInteger(1));
+				pScore->ShowLast5Times(pPlayer->GetCID(), (str_comp(pResult->GetString(0), "me") == 0) ? pSelf->Server()->ClientName(ClientID) : pResult->GetString(0),pResult->GetInteger(1));
 		}
 		else{
 			pSelf->Console()->PrintResponse(IConsole::OUTPUT_LEVEL_STANDARD, "info", "/last5times needs 1-2 parameter. 1st for name, 2nd for start number");
-			pSelf->Console()->PrintResponse(IConsole::OUTPUT_LEVEL_STANDARD, "info", "Example with 1: /last5times me, /last5times \"nameless tee\"");
-			pSelf->Console()->PrintResponse(IConsole::OUTPUT_LEVEL_STANDARD, "info", "Example with 2: /last5times me 5, /last5times \"nameless tee\" 10");				
+			pSelf->Console()->PrintResponse(IConsole::OUTPUT_LEVEL_STANDARD, "info", "Example with 1: /last5times me, /last5times nameless tee");
+			pSelf->Console()->PrintResponse(IConsole::OUTPUT_LEVEL_STANDARD, "info", "Example with 2: /last5times 5 me, /last5times 5 nameless tee");				
 		}
 	}	
 }
