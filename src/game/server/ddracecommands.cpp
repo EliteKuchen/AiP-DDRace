@@ -5,6 +5,9 @@
 #include <game/server/teams.h>
 #include <game/server/gamemodes/DDRace.h>
 #include <game/version.h>
+#if defined(CONF_SQL)
+	#include <game/server/score/sql_score.h>
+#endif
 
 void CGameContext::ConGoLeft(IConsole::IResult *pResult, void *pUserData, int ClientID)
 {
@@ -748,6 +751,32 @@ void CGameContext::ConTop5(IConsole::IResult *pResult, void *pUserData, int Clie
 	else
 		pSelf->Score()->ShowTop5(pPlayer->GetCID());
 }
+#if defined(CONF_SQL)
+void CGameContext::ConLast5Times(IConsole::IResult *pResult, void *pUserData, int ClientID)
+{
+	if(g_Config.m_SvUseSQL){
+		CGameContext *pSelf = (CGameContext *)pUserData;
+		
+		CSqlScore *score = (CSqlScore *)pSelf->Score();
+
+		CPlayer *pPlayer = pSelf->m_apPlayers[ClientID];
+
+
+				
+		if(pResult->NumArguments() > 0){
+			if (pResult->NumArguments() == 1)
+				score->ShowLast5Times(pPlayer->GetCID(), (str_comp(pResult->GetString(0), "me") == 0) ? pSelf->Server()->ClientName(ClientID) : pResult->GetString(0),1);
+			else
+				score->ShowLast5Times(pPlayer->GetCID(), (str_comp(pResult->GetString(0), "me") == 0) ? pSelf->Server()->ClientName(ClientID) : pResult->GetString(0),pResult->GetInteger(1));
+		}
+		else{
+			pSelf->Console()->PrintResponse(IConsole::OUTPUT_LEVEL_STANDARD, "info", "/last5times needs 1-2 parameter. 1st for name, 2nd for start number");
+			pSelf->Console()->PrintResponse(IConsole::OUTPUT_LEVEL_STANDARD, "info", "Example with 1: /last5times me, /last5times \"nameless tee\"");
+			pSelf->Console()->PrintResponse(IConsole::OUTPUT_LEVEL_STANDARD, "info", "Example with 2: /last5times me 5, /last5times \"nameless tee\" 10");				
+		}
+	}	
+}
+#endif
 
 void CGameContext::ConRank(IConsole::IResult *pResult, void *pUserData, int ClientID)
 {
