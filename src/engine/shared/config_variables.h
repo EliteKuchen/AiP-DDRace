@@ -90,7 +90,7 @@ MACRO_CONFIG_INT(DbgResizable, dbg_resizable, 0, 0, 0, CFGFLAG_CLIENT, "Enables 
 
 //DDRace
 MACRO_CONFIG_STR(SvWelcome, sv_welcome, 64, "", CFGFLAG_SERVER, "Message that will be displayed to players who join the server", 3)
-MACRO_CONFIG_STR(SvBroadcast, sv_broadcast, 64, "DDRace.info Trunk 0.5", CFGFLAG_SERVER, "The broadcasting message", 3)
+MACRO_CONFIG_STR(SvBroadcast, sv_broadcast, 64, "", CFGFLAG_SERVER, "The broadcasting message", 3)
 MACRO_CONFIG_INT(SvReservedSlots, sv_reserved_slots, 0, 0, 16, CFGFLAG_SERVER, "The number of slots that are reserved for special players", 3)
 MACRO_CONFIG_STR(SvReservedSlotsPass, sv_reserved_slots_pass, 32, "", CFGFLAG_SERVER, "The password that is required to use a reserved slot", 3)
 MACRO_CONFIG_STR(SvRconPasswordAdmin, sv_admin_pass, 32, "", CFGFLAG_SERVER, "Remote console administrator password", 4)
@@ -198,7 +198,7 @@ MACRO_CONFIG_INT(SvTeamAskTime, sv_team_ask_time, 10, 0, 9999, CFGFLAG_SERVER, "
 MACRO_CONFIG_INT(SvAllowTeamLeader, sv_allow_team_leader, 1, 0, 1, CFGFLAG_SERVER, "Whether the admin allows teams to have leaders or not", 4)
 
 MACRO_CONFIG_INT(ClAutoRaceRecord, cl_auto_race_record, 1, 0, 1, CFGFLAG_CLIENT|CFGFLAG_SAVE, "Save the best demo of each race", -1)
-MACRO_CONFIG_INT(ClDemoName, cl_demo_name, 1, 0, 1, CFGFLAG_CLIENT|CFGFLAG_SAVE, "Save the player name within the demo", -1)
+MACRO_CONFIG_INT(ClDemoName, cl_demo_name, 1, 0, 1, CFGFLAG_CLIENT|CFGFLAG_SAVE, "Save the playername within the demo", -1)
 MACRO_CONFIG_INT(ClRaceGhost, cl_race_ghost, 1, 0, 1, CFGFLAG_CLIENT|CFGFLAG_SAVE, "Enable ghost",-1)
 MACRO_CONFIG_INT(ClRaceShowGhost, cl_race_show_ghost, 1, 0, 1, CFGFLAG_CLIENT|CFGFLAG_SAVE, "Show ghost",-1)
 MACRO_CONFIG_INT(ClRaceSaveGhost, cl_race_save_ghost, 1, 0, 1, CFGFLAG_CLIENT|CFGFLAG_SAVE, "Save ghost",-1)
@@ -210,6 +210,20 @@ MACRO_CONFIG_INT(SvChatThreshold, sv_chat_threshold, 1000, 50, 10000 , CFGFLAG_S
 MACRO_CONFIG_INT(SvSpamMuteDuration, sv_spam_mute_duration, 60, 0, 3600 , CFGFLAG_SERVER, "how many seconds to mute, if player triggers mute on spam. 0 = off", 3)
 MACRO_CONFIG_INT(SvResetPickus, sv_reset_pickups, 0, 0, 1, CFGFLAG_SERVER, "Whether the weapons are reset on passing the start tile or not", 4)
 MACRO_CONFIG_INT(ClShowOthers, cl_show_others, 0, 0, 1, CFGFLAG_CLIENT|CFGFLAG_SAVE, "Show players in other teams",-1)
+
+MACRO_CONFIG_INT(SvRescue, sv_rescue, 1, 0, 1, CFGFLAG_SERVER, "", 3)
+
+MACRO_CONFIG_INT(SvLevelRescue, sv_level_rescue, 0, 0, 10, CFGFLAG_SERVER, "", 3)
+MACRO_CONFIG_INT(SvLevelTeleMe, sv_level_tele_me, 1, 0, 10, CFGFLAG_SERVER, "", 3)
+MACRO_CONFIG_INT(SvLevelRainbow, sv_level_rainbow, 2, 0, 10, CFGFLAG_SERVER, "", 3)
+MACRO_CONFIG_INT(SvLevelReload, sv_level_reload, 3, 0, 10, CFGFLAG_SERVER, "", 3)
+MACRO_CONFIG_INT(SvLevelBloody, sv_level_bloody, 1, 0, 10, CFGFLAG_SERVER, "", 3)
+MACRO_CONFIG_INT(SvLevelSuper, sv_level_super, 1, 0, 10, CFGFLAG_SERVER, "", 3)
+MACRO_CONFIG_INT(SvLevelWhisper, sv_level_whisper, 0, 0, 10, CFGFLAG_SERVER, "", 3)
+MACRO_CONFIG_INT(SvLevelHammer, sv_level_hammer, 1, 0, 10, CFGFLAG_SERVER, "", 3)
+MACRO_CONFIG_INT(SvLevelMove, sv_level_move, 1, 0, 10, CFGFLAG_SERVER, "", 3)
+MACRO_CONFIG_INT(SvLevelWeapons, sv_level_weapons, 1, 0, 10, CFGFLAG_SERVER, "", 3)
+MACRO_CONFIG_INT(SvLevelInvis, sv_level_Invis, 2, 0, 10, CFGFLAG_SERVER, "", 3)//For more SvLevel's rewrite "CConsole::ExecuteLineStroked" (console.cpp)
 
 
 #endif

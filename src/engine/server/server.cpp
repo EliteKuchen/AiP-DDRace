@@ -315,6 +315,7 @@ int CServer::Init()
 	}
 
 	m_CurrentGameTick = 0;
+	m_server_time = 0;
 	m_AnnouncementLastLine = 0;
 
 	return 0;
@@ -347,13 +348,12 @@ void CServer::GetClientIP(int ClientID, char *pIPString, int Size)
 		str_format(pIPString, Size, "%d.%d.%d.%d", Addr.ip[0], Addr.ip[1], Addr.ip[2], Addr.ip[3]);
 	}
 }
-	
 void CServer::GetClientAddr(int ClientID, NETADDR *pAddr)
 {
 	if(ClientID >= 0 && ClientID < MAX_CLIENTS && m_aClients[ClientID].m_State == CClient::STATE_INGAME)
 		*pAddr = m_NetServer.ClientAddr(ClientID);
 }
-	
+
 int *CServer::LatestInput(int ClientID, int *size)
 {
 	if(ClientID < 0 || ClientID >= MAX_CLIENTS || m_aClients[ClientID].m_State < CServer::CClient::STATE_READY)
@@ -1306,6 +1306,7 @@ int CServer::Run()
 			while(t > TickStartTime(m_CurrentGameTick+1))
 			{
 				m_CurrentGameTick++;
+				m_server_time++;
 				NewTicks++;
 				
 				// apply new input

@@ -113,7 +113,20 @@ enum
 	TILE_NPC,
 	TILE_EHOOK,
 	TILE_NOHIT,
-	TILE_NPH,//Remember to change this in collision.cpp if you add anymore tiles
+	TILE_NPH,
+	TILE_RAINBOW = 176,
+	TILE_RELOAD,
+	TILE_ADMIN,
+	TILE_MEMBER,//TODO: Clanlist
+	TILE_SUPER,
+	TILE_HAMMER,
+	TILE_INVIS,
+	TILE_BLOODY,
+	TILE_JMPRESET = 189,
+	TILE_JMPP,//Jump-plus(1)
+	TILE_JMPM, //Jump-minus(1)
+	//Remember to change this in collision.cpp if you add anymore tiles
+
 	//End of higher tiles
 	//Layers
 	LAYER_GAME=0,

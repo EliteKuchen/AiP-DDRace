@@ -11,6 +11,7 @@ class IServer : public IInterface
 protected:
 	int m_CurrentGameTick;
 	int m_TickSpeed;
+	int m_server_time;
 
 public:
 	/*
@@ -24,6 +25,7 @@ public:
 	
 	int Tick() const { return m_CurrentGameTick; }
 	int TickSpeed() const { return m_TickSpeed; }
+	int server_time() const { return m_server_time; }
 
 	virtual const char *ClientName(int ClientID) = 0;
 	virtual bool ClientIngame(int ClientID) = 0;

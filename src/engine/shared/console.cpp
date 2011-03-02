@@ -1,6 +1,7 @@
 /* (c) Magnus Auvinen. See licence.txt in the root of the distribution for more information. */
 /* If you are missing that file, acquire a complete release at teeworlds.com.                */
 #include <new>
+#include <string.h>
 #include <base/system.h>
 #include <base/math.h>
 #include <engine/shared/protocol.h>
@@ -280,6 +281,33 @@ void CConsole::ExecuteLineStroked(int Stroke, const char *pStr, const int Client
 
 		if(pCommand)
 		{
+			//TODO: Rewrite this
+			if(!strncmp(pCommand->m_pName, "super", 5))
+				pCommand->m_Level = g_Config.m_SvLevelSuper;
+			else if(!strncmp(pCommand->m_pName, "tele_me", 7))
+				pCommand->m_Level = g_Config.m_SvLevelTeleMe;
+			else if(!strncmp(pCommand->m_pName, "rainbow", 7))
+				pCommand->m_Level = g_Config.m_SvLevelRainbow;
+			else if(!strncmp(pCommand->m_pName, "reload", 6))
+				pCommand->m_Level = g_Config.m_SvLevelReload;
+			else if(!strncmp(pCommand->m_pName, "bloody", 6))
+				pCommand->m_Level = g_Config.m_SvLevelBloody;
+			else if(!strncmp(pCommand->m_pName, "w", 1))
+				pCommand->m_Level = g_Config.m_SvLevelWhisper;
+			else if(!strncmp(pCommand->m_pName, "hammer", 6))
+				pCommand->m_Level = g_Config.m_SvLevelHammer;
+			else if(!strncmp(pCommand->m_pName, "hammer", 6))
+				pCommand->m_Level = g_Config.m_SvLevelHammer;
+			else if(!strncmp(pCommand->m_pName, "weapons", 7))
+				pCommand->m_Level = g_Config.m_SvLevelInvis;
+			else if(!strncmp(pCommand->m_pName, "invis", 5))
+				pCommand->m_Level = g_Config.m_SvLevelWeapons;
+			else if(!strncmp(pCommand->m_pName, "r", 1))
+				pCommand->m_Level = g_Config.m_SvLevelRescue;
+			else if((!strncmp(pCommand->m_pName, "down", 4)) || (!strncmp(pCommand->m_pName, "right", 4)) ||
+					(!strncmp(pCommand->m_pName, "left", 4)) || (!strncmp(pCommand->m_pName, "up", 2)))
+				pCommand->m_Level = g_Config.m_SvLevelMove;
+
 			int IsStrokeCommand = 0;
 			if(Result.m_pCommand[0] == '+')
 			{
@@ -309,7 +337,7 @@ void CConsole::ExecuteLineStroked(int Stroke, const char *pStr, const int Client
 				{
 					if(Result.GetVictim() == CResult::VICTIM_ME)
 						Result.SetVictim(ClientID);
-					
+
 					if((ClientLevel < pCommand->m_Level && !(pCommand->m_Flags & CMDFLAG_HELPERCMD)) || (ClientLevel < 1 && (pCommand->m_Flags & CMDFLAG_HELPERCMD)))
 					{
 						RegisterAlternativePrintResponseCallback(pfnAlternativePrintResponseCallback, pResponseUserData);
@@ -700,7 +728,6 @@ void CConsole::Register(const char *pName, const char *pParams,
 	pCommand->m_pParams = pParams;
 	pCommand->m_Flags = Flags;
 	pCommand->m_Level = Level;
-	
 	
 	pCommand->m_pNext = m_pFirstCommand;
 	m_pFirstCommand = pCommand;

@@ -87,7 +87,7 @@ void CCollision::Init(class CLayers *pLayers)
 				m_pDoor[i].m_Number = 0;
 
 			Index = m_pSwitch[i].m_Type;
-			if(Index <= TILE_NPH)
+			if(Index <= TILE_JMPM)
 			{
 				if(Index >= TILE_FREEZE && Index <= TILE_SWITCHCLOSE)
 					m_pSwitch[i].m_Type = Index;
@@ -98,7 +98,7 @@ void CCollision::Init(class CLayers *pLayers)
 		if(m_pFront)
 		{
 			Index = m_pFront[i].m_Index;
-			if(Index <= TILE_NPH)
+			if(Index <= TILE_JMPM)
 			{
 				switch(Index)
 				{
@@ -119,12 +119,12 @@ void CCollision::Init(class CLayers *pLayers)
 				}
 
 				// DDRace tiles
-				if(Index == TILE_THROUGH || (Index >= TILE_FREEZE && Index <= TILE_UNFREEZE) || (Index >= TILE_SWITCHOPEN && Index<=TILE_BOOST) || (Index >= TILE_BEGIN && Index <= TILE_STOPA) || Index == TILE_CP || Index == TILE_CP_F || (Index >= TILE_OLDLASER && Index <= TILE_NPH) || (Index >= TILE_EHOOK_START && Index <= TILE_EHOOK_END) || (Index >= TILE_DFREEZE && Index <= TILE_DUNFREEZE))
+				if(Index == TILE_THROUGH || (Index >= TILE_FREEZE && Index <= TILE_UNFREEZE) || (Index >= TILE_SWITCHOPEN && Index<=TILE_BOOST) || (Index >= TILE_BEGIN && Index <= TILE_STOPA) || Index == TILE_CP || Index == TILE_CP_F || (Index >= TILE_OLDLASER && Index <= TILE_NPH) || (Index >= TILE_EHOOK_START && Index <= TILE_EHOOK_END) || (Index >= TILE_DFREEZE && Index <= TILE_DUNFREEZE) || (Index >= TILE_RAINBOW && Index <= TILE_BLOODY) || (Index >= TILE_JMPRESET && Index <= TILE_JMPM))
 					m_pFront[i].m_Index = Index;
 			}
 		}
 		Index = m_pTiles[i].m_Index;
-		if(Index <= TILE_NPH)
+		if(Index <= TILE_JMPM)
 		{
 			switch(Index)
 			{
@@ -145,7 +145,7 @@ void CCollision::Init(class CLayers *pLayers)
 			}
 
 			// DDRace tiles
-			if(Index == TILE_THROUGH || (Index >= TILE_FREEZE && Index <= TILE_UNFREEZE) || (Index >= TILE_SWITCHOPEN && Index<=TILE_BOOST) || (Index >= TILE_BEGIN && Index <= TILE_STOPA) || Index == TILE_CP || Index == TILE_CP_F || (Index >= TILE_OLDLASER && Index <= TILE_NPH) || (Index >= TILE_EHOOK_START && Index <= TILE_EHOOK_END) || (Index >= TILE_DFREEZE && Index <= TILE_DUNFREEZE))
+			if(Index == TILE_THROUGH || (Index >= TILE_FREEZE && Index <= TILE_UNFREEZE) || (Index >= TILE_SWITCHOPEN && Index<=TILE_BOOST) || (Index >= TILE_BEGIN && Index <= TILE_STOPA) || Index == TILE_CP || Index == TILE_CP_F || (Index >= TILE_OLDLASER && Index <= TILE_NPH) || (Index >= TILE_EHOOK_START && Index <= TILE_EHOOK_END) || (Index >= TILE_DFREEZE && Index <= TILE_DUNFREEZE) || (Index >= TILE_RAINBOW && Index <= TILE_BLOODY) || (Index >= TILE_JMPRESET && Index <= TILE_JMPM))
 				m_pTiles[i].m_Index = Index;
 		}
 	}
@@ -464,6 +464,16 @@ int CCollision::IsMover(int x, int y, int* Flags)
 		return 0;
 }
 
+bool CCollision::IsAir(int x, int y)
+{
+	int Nx = clamp(x/32, 0, m_Width-1);
+	int Ny = clamp(y/32, 0, m_Height-1);
+	int Index = m_pTiles[Ny*m_Width+Nx].m_Index;
+	if (Index == TILE_AIR)
+		return true;
+	return false;
+}
+
 int CCollision::IsCheckpoint(int Index)
 {
 	if(Index < 0)
@@ -531,9 +541,9 @@ bool CCollision::TileExists(int Index)
 	if(Index < 0)
 		return false;
 
-	if(m_pTiles[Index].m_Index >= TILE_FREEZE && m_pTiles[Index].m_Index <= TILE_NPH)
+	if(m_pTiles[Index].m_Index >= TILE_FREEZE && m_pTiles[Index].m_Index <= TILE_JMPM)
 		return true;
-	if(m_pFront && m_pFront[Index].m_Index >= TILE_FREEZE && m_pFront[Index].m_Index  <= TILE_NPH)
+	if(m_pFront && m_pFront[Index].m_Index >= TILE_FREEZE && m_pFront[Index].m_Index  <= TILE_JMPM)
 		return true;
 	if(m_pTele && (m_pTele[Index].m_Type == TILE_TELEIN || m_pTele[Index].m_Type == TILE_TELEINEVIL))
 		return true;

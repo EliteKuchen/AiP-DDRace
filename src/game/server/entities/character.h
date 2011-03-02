@@ -142,6 +142,10 @@ private:
 	void DDRaceTick();
 	void DDRacePostCoreTick();
 	void HandleBroadcast();
+
+	int m_LastTile;
+	int m_MaxJumps;
+	int m_TmpJumps;
 public:
 	CGameTeams* Teams();
 	bool Freeze(int Time);
@@ -153,8 +157,6 @@ public:
 	int Team();
 	bool CanCollide(int ClientID);
 	bool SameTeam(int ClientID);
-	int m_HammerType;
-	bool m_Super;
 	int m_TeamBeforeSuper;
 	bool m_Fly;
 	int m_FreezeTime;
@@ -221,6 +223,8 @@ public:
 	bool GetWeaponGot(int Type) { return m_aWeapons[Type].m_Got; };
 	void SetWeaponGot(int Type, bool Value) { m_aWeapons[Type].m_Got = Value; };
 	int GetWeaponAmmo(int Type) { return m_aWeapons[Type].m_Ammo; };
+	int GetJumps() { return m_MaxJumps; };
+	void SetJumps(int jumps) { m_MaxJumps = jumps; };
 	void SetWeaponAmmo(int Type, int Value) { m_aWeapons[Type].m_Ammo = Value; };
 	bool IsAlive() { return m_Alive; };
 	void SetEmoteType(int EmoteType) { m_EmoteType = EmoteType; };
@@ -229,6 +233,15 @@ public:
 	void SetNinjaActivationTick(int ActivationTick) { m_Ninja.m_ActivationTick = ActivationTick; };
 	void SetNinjaCurrentMoveTime(int CurrentMoveTime) { m_Ninja.m_CurrentMoveTime = CurrentMoveTime; };
 
+	//EKedit
+	vec2 reset_pos;
+	bool resetting;
+
+	//Cheats
+	int m_HammerType;
+	bool m_Super;	
+	bool m_Reload;
+	bool m_Bloody;
 };
 
 enum 
@@ -237,5 +250,21 @@ enum
 	DDRACE_STARTED,
 	DDRACE_CHEAT, // no time and won't start again unless ordered by a mod or death
 	DDRACE_FINISHED
+};
+
+enum//for int m_LastTile
+{
+	ON_FREE = 0,//not in rainbow,reload....bloody zone
+	ON_RAINBOW,
+	ON_RELOAD,
+	ON_ADMIN,
+	ON_MEMBER,//TODO: CLANLIST
+	ON_SUPER,
+	ON_HAMMER,
+	ON_INVIS,
+	ON_BLOODY,
+	ON_JMPRESET,
+	ON_JMPP,
+	ON_JMPM
 };
 #endif

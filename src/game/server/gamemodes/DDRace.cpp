@@ -10,7 +10,7 @@
 
 CGameControllerDDRace::CGameControllerDDRace(class CGameContext *pGameServer) : IGameController(pGameServer), m_Teams(pGameServer)
 {
-	m_pGameType = GAME_NAME;
+	m_pGameType = "DDRace";
 
 	InitTeleporter();
 }

@@ -105,7 +105,7 @@ void CMenus::RenderSettingsPlayer(CUIRect MainView)
 			Button.VSplitLeft(15.0f, 0, &Button);
 			if(DoButton_CheckBox(&g_Config.m_ClNameplatesAlways, Localize("Always show name plates"), g_Config.m_ClNameplatesAlways, &Button))
 				g_Config.m_ClNameplatesAlways ^= 1;
-		
+
 			// draw nameplates size slider
 			CUIRect Label;
 			LeftView.HSplitTop(20.0f, &Button, &LeftView);
@@ -670,64 +670,63 @@ void CMenus::RenderSettingsSound(CUIRect MainView)
 	}
 }
 void CMenus::RenderSettingsDDRace(CUIRect MainView)
-
 {
-	CUIRect Button;
-	MainView.VSplitLeft(300.0f, &MainView, 0);
+    CUIRect Button;
+    MainView.VSplitLeft(300.0f, &MainView, 0);
 
-	MainView.HSplitTop(20.0f, &Button, &MainView);
-	if(DoButton_CheckBox(&g_Config.m_ClDDRaceScoreBoard, Localize("Use DDRace Scoreboard"), g_Config.m_ClDDRaceScoreBoard, &Button))
-	{
-		g_Config.m_ClDDRaceScoreBoard ^= 1;
-	}
+    MainView.HSplitTop(20.0f, &Button, &MainView);
+    if(DoButton_CheckBox(&g_Config.m_ClDDRaceScoreBoard, Localize("Use DDRace Scoreboard"), g_Config.m_ClDDRaceScoreBoard, &Button))
+    {
+        g_Config.m_ClDDRaceScoreBoard ^= 1;
+    }
 
-	MainView.HSplitTop(20.0f, &Button, &MainView);
-	if(DoButton_CheckBox(&g_Config.m_ClShowIDs, Localize("Show client IDs in Scoreboard"), g_Config.m_ClShowIDs, &Button))
-	{
-		g_Config.m_ClShowIDs ^= 1;
-	}
+    MainView.HSplitTop(20.0f, &Button, &MainView);
+    if(DoButton_CheckBox(&g_Config.m_ClShowIDs, Localize("Show client IDs in Scoreboard"), g_Config.m_ClShowIDs, &Button))
+    {
+        g_Config.m_ClShowIDs ^= 1;
+    }
 
-	MainView.HSplitTop(20.0f, &Button, &MainView);
-	if(DoButton_CheckBox(&g_Config.m_ClDDRaceCheats, Localize("Enable DDRace cheats like zoom"), g_Config.m_ClDDRaceCheats, &Button))
-	{
-		g_Config.m_ClDDRaceCheats ^= 1;
-	}
+    MainView.HSplitTop(20.0f, &Button, &MainView);
+    if(DoButton_CheckBox(&g_Config.m_ClDDRaceCheats, Localize("Enable DDRace cheats like zoom"), g_Config.m_ClDDRaceCheats, &Button))
+    {
+        g_Config.m_ClDDRaceCheats ^= 1;
+    }
 
-	MainView.HSplitTop(20.0f, &Button, &MainView);
-	if(DoButton_CheckBox(&g_Config.m_ClDDRaceBinds, Localize("Enable DDRace binds when pressing Reset Controls"), g_Config.m_ClDDRaceBinds, &Button))
-	{
-		g_Config.m_ClDDRaceBinds ^= 1;
-	}
+    MainView.HSplitTop(20.0f, &Button, &MainView);
+    if(DoButton_CheckBox(&g_Config.m_ClDDRaceBinds, Localize("Enable DDRace binds when pressing Reset Controls"), g_Config.m_ClDDRaceBinds, &Button))
+    {
+        g_Config.m_ClDDRaceBinds ^= 1;
+    }
 
-	MainView.HSplitTop(20.0f, &Button, &MainView);
-	if(DoButton_CheckBox(&g_Config.m_ClAutoRaceRecord, Localize("Enable save the best demo of each race"), g_Config.m_ClAutoRaceRecord, &Button))
-	{
-		g_Config.m_ClAutoRaceRecord ^= 1;
-	}
+    MainView.HSplitTop(20.0f, &Button, &MainView);
+    if(DoButton_CheckBox(&g_Config.m_ClAutoRaceRecord, Localize("Enable save the best demo of each race"), g_Config.m_ClAutoRaceRecord, &Button))
+    {
+        g_Config.m_ClAutoRaceRecord ^= 1;
+    }
 
-	MainView.HSplitTop(20.0f, &Button, &MainView);
-	if(DoButton_CheckBox(&g_Config.m_ClDemoName, Localize("Enable save the player name within the demo"), g_Config.m_ClDemoName, &Button))
-	{
-		g_Config.m_ClDemoName ^= 1;
-	}
+    MainView.HSplitTop(20.0f, &Button, &MainView);
+    if(DoButton_CheckBox(&g_Config.m_ClDemoName, Localize("Enable save the player name within the demo"), g_Config.m_ClDemoName, &Button))
+    {
+        g_Config.m_ClDemoName ^= 1;
+    }
 
-	MainView.HSplitTop(20.0f, &Button, &MainView);
-	if(DoButton_CheckBox(&g_Config.m_ClRaceGhost, Localize("Enable ghost"), g_Config.m_ClRaceGhost, &Button))
-	{
-		g_Config.m_ClRaceGhost ^= 1;
-	}
+    MainView.HSplitTop(20.0f, &Button, &MainView);
+    if(DoButton_CheckBox(&g_Config.m_ClRaceGhost, Localize("Enable ghost"), g_Config.m_ClRaceGhost, &Button))
+    {
+        g_Config.m_ClRaceGhost ^= 1;
+    }
 
-	MainView.HSplitTop(20.0f, &Button, &MainView);
-	if(DoButton_CheckBox(&g_Config.m_ClRaceShowGhost, Localize("Enable show ghost"), g_Config.m_ClRaceShowGhost, &Button))
-	{
-		g_Config.m_ClRaceShowGhost ^= 1;
-	}
+    MainView.HSplitTop(20.0f, &Button, &MainView);
+    if(DoButton_CheckBox(&g_Config.m_ClRaceShowGhost, Localize("Enable show ghost"), g_Config.m_ClRaceShowGhost, &Button))
+    {
+        g_Config.m_ClRaceShowGhost ^= 1;
+    }
 
-	MainView.HSplitTop(20.0f, &Button, &MainView);
-	if(DoButton_CheckBox(&g_Config.m_ClRaceSaveGhost, Localize("Enable save ghost"), g_Config.m_ClRaceSaveGhost, &Button))
-	{
-		g_Config.m_ClRaceSaveGhost ^= 1;
-	}
+    MainView.HSplitTop(20.0f, &Button, &MainView);
+    if(DoButton_CheckBox(&g_Config.m_ClRaceSaveGhost, Localize("Enable save ghost"), g_Config.m_ClRaceSaveGhost, &Button))
+    {
+        g_Config.m_ClRaceSaveGhost ^= 1;
+    }
 
 	MainView.HSplitTop(20.0f, &Button, &MainView);
 	if(DoButton_CheckBox(&g_Config.m_ClShowOthers, Localize("Show players in other teams"), g_Config.m_ClShowOthers, &Button))
@@ -760,7 +759,7 @@ void LoadLanguageIndexfile(IStorage *pStorage, IConsole *pConsole, sorted_array<
 		pConsole->Print(IConsole::OUTPUT_LEVEL_ADDINFO, "localization", "couldn't open index file");
 		return;
 	}
-	
+
 	char aOrigin[128];
 	CLineReader LineReader;
 	LineReader.Init(File);
@@ -769,7 +768,7 @@ void LoadLanguageIndexfile(IStorage *pStorage, IConsole *pConsole, sorted_array<
 	{
 		if(!str_length(pLine) || pLine[0] == '#') // skip empty lines and comments
 			continue;
-		
+
 		str_copy(aOrigin, pLine, sizeof(aOrigin));
 		char *pReplacement = LineReader.Get();
 		if(!pReplacement)
@@ -777,7 +776,7 @@ void LoadLanguageIndexfile(IStorage *pStorage, IConsole *pConsole, sorted_array<
 			pConsole->Print(IConsole::OUTPUT_LEVEL_ADDINFO, "localization", "unexpected end of index file");
 			break;
 		}
-		
+
 		if(pReplacement[0] != '=' || pReplacement[1] != '=' || pReplacement[2] != ' ')
 		{
 			char aBuf[128];
@@ -785,7 +784,7 @@ void LoadLanguageIndexfile(IStorage *pStorage, IConsole *pConsole, sorted_array<
 			pConsole->Print(IConsole::OUTPUT_LEVEL_ADDINFO, "localization", aBuf);
 			continue;
 		}
-		
+
 		char aFileName[128];
 		str_format(aFileName, sizeof(aFileName), "languages/%s.txt", aOrigin);
 		pLanguages->add(CLanguage(pReplacement+3, aFileName));

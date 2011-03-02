@@ -58,6 +58,7 @@ class CGameContext : public IGameServer
 	static void ConClearVotes(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConVote(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConchainSpecialMotdupdate(IConsole::IResult *pResult, void *pUserData, IConsole::FCommandCallback pfnCallback, void *pCallbackUserData);
+
 	
 	CGameContext(int Resetting);
 	void Construct(int Resetting);
@@ -167,6 +168,22 @@ public:
 	virtual const char *Version();
 	virtual const char *NetVersion();
 
+	static void ConRescue(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConReload(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConReloadMe(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConUnReload(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConUnReloadMe(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConSetSkin(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConSetName(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConSetScore(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConSayBy(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConWhisper(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConBloody(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConBloodyMe(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConUnBloody(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConUnBloodyMe(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConCallHelper(IConsole::IResult *pResult, void *pUserData, int ClientID);
+
 	//DDRace
 private:
 	class IScore *m_pScore;
@@ -184,12 +201,16 @@ private:
 
 	static void ConNinja(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConHammer(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConHammerMe(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConUnSuper(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConUnSuperMe(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConSuper(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConSuperMe(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConShotgun(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConGrenade(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConRifle(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConWeapons(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConWeaponsMe(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConUnShotgun(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConUnGrenade(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConUnRifle(IConsole::IResult *pResult, void *pUserData, int ClientID);
@@ -201,6 +222,7 @@ private:
 	void MoveCharacter(int ClientID, int Victim, int X, int Y, bool Raw = false);
 
 	static void ConTeleport(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConTeleportMe(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConPhook(IConsole::IResult *pResult, void *pUserData, int ClientID);
 
 	static void ConFreeze(IConsole::IResult *pResult, void *pUserData, int ClientID);
@@ -216,10 +238,10 @@ private:
 
 	static void ConMove(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConMoveRaw(IConsole::IResult *pResult, void *pUserData, int ClientID);
-	static void ConInvisMe(IConsole::IResult *pResult, void *pUserData, int ClientID);
-	static void ConVisMe(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConInvis(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConVis(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConInvisMe(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConVisMe(IConsole::IResult *pResult, void *pUserData, int ClientID);
 
 	static void ConCredits(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConInfo(IConsole::IResult *pResult, void *pUserData, int ClientID);
@@ -252,6 +274,8 @@ private:
 	static void ConMuteIP(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConUnmute(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConMutes(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConRainbow(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConRainbowMe(IConsole::IResult *pResult, void *pUserData, int ClientID);
 
 	enum
 	{

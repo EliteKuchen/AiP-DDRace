@@ -105,6 +105,8 @@ public:
 	class CLayers *Layers() { return m_pLayers; }
 	SSwitchers* m_pSwitchers;
 	int m_NumSwitchers;
+
+	bool IsAir(int x, int y);
 };
 
 void ThroughOffset(vec2 Pos0, vec2 Pos1, int *Ox, int *Oy);

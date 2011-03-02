@@ -136,6 +136,10 @@ public:
 	int m_AskedTick; // when was this player asked by another player
 	int m_Asked; // who did this player ask
 	int m_AskerTick; // when did this player ask another player
+
+	bool m_admin_rainbow;
+
+	int m_Last_HelperCall;
 };
 
 #endif
