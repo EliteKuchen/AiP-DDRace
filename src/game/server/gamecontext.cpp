@@ -52,6 +52,8 @@ void CGameContext::Construct(int Resetting)
 		m_pScore = 0;
 		m_NumMutes = 0;
 	}
+
+	ClanList = new CList(this);
 }
 
 CGameContext::CGameContext(int Resetting)

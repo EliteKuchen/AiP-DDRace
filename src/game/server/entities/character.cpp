@@ -1325,7 +1325,7 @@ void CCharacter::HandleAiPTiles(int Index)
 		if(m_LastTile != ON_MEMBER)
 		{
 			m_LastTile = ON_MEMBER;
-			//if(IsClan...)//TODO: CLANLIST
+			if(!GameServer()->ClanList->Check(GetPlayer()->GetCID()))//CLANLIST CHECK
 			{
 				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"ClanZone!!!");
 				Die(GetPlayer()->GetCID(), WEAPON_GAME);

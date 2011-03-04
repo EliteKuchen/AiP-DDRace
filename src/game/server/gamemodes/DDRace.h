@@ -22,5 +22,7 @@ public:
 
 	void InitTeleporter();
 	virtual void Tick();
+
+	//CList ClanList;
 };
 #endif

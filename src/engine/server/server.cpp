@@ -348,6 +348,15 @@ void CServer::GetClientIP(int ClientID, char *pIPString, int Size)
 		str_format(pIPString, Size, "%d.%d.%d.%d", Addr.ip[0], Addr.ip[1], Addr.ip[2], Addr.ip[3]);
 	}
 }
+
+void CServer::GetClientIPRange(int ClientID, char *pIPString, int Size)
+{
+	if(ClientID >= 0 && ClientID < MAX_CLIENTS && m_aClients[ClientID].m_State == CClient::STATE_INGAME)
+	{
+		NETADDR Addr = m_NetServer.ClientAddr(ClientID);
+		str_format(pIPString, Size, "%d.%d", Addr.ip[0], Addr.ip[1]);
+	}
+}
 void CServer::GetClientAddr(int ClientID, NETADDR *pAddr)
 {
 	if(ClientID >= 0 && ClientID < MAX_CLIENTS && m_aClients[ClientID].m_State == CClient::STATE_INGAME)

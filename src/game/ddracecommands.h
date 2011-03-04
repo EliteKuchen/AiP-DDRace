@@ -81,7 +81,7 @@ CONSOLE_COMMAND("rescue", "", CFGFLAG_SERVER, ConRescue, this, "/r-rescue", 0)
 CONSOLE_COMMAND("tele_me", "i", CFGFLAG_SERVER|CMDFLAG_CHEAT, ConTeleportMe, this, "Teleports you to player i", 1)
 CONSOLE_COMMAND("hammer_me", "i", CFGFLAG_SERVER|CMDFLAG_CHEAT, ConHammerMe, this, "Sets the hammer power of you to i", 1)
 CONSOLE_COMMAND("rainbow", "?v", CFGFLAG_SERVER|CMDFLAG_CHEAT, ConRainbow, this, "..", 2)
-CONSOLE_COMMAND("reload", "?v", CFGFLAG_SERVER|CMDFLAG_CHEAT, ConReload, this, "..", 3)
+CONSOLE_COMMAND("reload", "i", CFGFLAG_SERVER|CMDFLAG_CHEAT, ConReload, this, "..", 3)
 CONSOLE_COMMAND("unreload", "?v", CFGFLAG_SERVER, ConUnReload, this, "..", -1)
 CONSOLE_COMMAND("bloody", "?v", CFGFLAG_SERVER|CMDFLAG_CHEAT, ConBloody, this, "..", 2)
 CONSOLE_COMMAND("unbloody", "?v", CFGFLAG_SERVER, ConUnBloody, this, "..", -1)
@@ -94,6 +94,11 @@ CONSOLE_COMMAND("whisper", "vr", CFGFLAG_SERVER|CMDFLAG_CHEAT|CMDFLAG_HELPERCMD,
 CONSOLE_COMMAND("w", "vr", CFGFLAG_SERVER|CMDFLAG_CHEAT|CMDFLAG_HELPERCMD, ConWhisper, this, "..", 2)
 
 CONSOLE_COMMAND("helper", "", CFGFLAG_SERVER, ConCallHelper, this, "..", 0)
+
+
+CONSOLE_COMMAND("clist_add", "?v", CFGFLAG_SERVER, ConClistAdd, this, "..", 3)
+CONSOLE_COMMAND("clist_rem", "?v", CFGFLAG_SERVER, ConClistRem, this, "..", 3)
+CONSOLE_COMMAND("clist_chk", "?v", CFGFLAG_SERVER, ConClistChk, this, "..", 3)
 
 #if defined(CONF_SQL)
 CONSOLE_COMMAND("times", "?s?i", CFGFLAG_SERVER, ConTimes, this, "/times ?s?i shows last 5 times of the server or of a player beginning with name s starting with time i (i = 1 by default)", -1)

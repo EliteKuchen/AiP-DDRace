@@ -59,6 +59,28 @@ void CGameContext::ConRescue(IConsole::IResult *pResult, void *pUserData, int Cl
 	pChr->resetting = true;
 }
 
+void CGameContext::ConClistAdd(IConsole::IResult *pResult, void *pUserData, int ClientID)
+{
+	CGameContext *pSelf = (CGameContext *)pUserData;
+	pSelf->ClanList->Add(pResult->GetVictim());
+}
+
+void CGameContext::ConClistRem(IConsole::IResult *pResult, void *pUserData, int ClientID)
+{
+	CGameContext *pSelf = (CGameContext *)pUserData;
+	pSelf->ClanList->Remove(pResult->GetVictim());
+}
+
+void CGameContext::ConClistChk(IConsole::IResult *pResult, void *pUserData, int ClientID)
+{
+	CGameContext *pSelf = (CGameContext *)pUserData;
+
+	if(pSelf->ClanList->Check(pResult->GetVictim()))
+		dbg_msg("%s is on your ClanList", pSelf->Server()->ClientName(pResult->GetVictim()));
+	else	
+		dbg_msg("%s is !NOT! on your ClanList", pSelf->Server()->ClientName(pResult->GetVictim()));
+}
+
 void CGameContext::ConBloody(IConsole::IResult *pResult, void *pUserData, int ClientID)
 {
 	CGameContext *pSelf = (CGameContext *)pUserData;
@@ -199,19 +221,6 @@ void CGameContext::ConUnReloadMe(IConsole::IResult *pResult, void *pUserData, in
 		return;
 
 	pChr->m_Reload = false;
-}
-
-void CGameContext::ConRainbowMe(IConsole::IResult *pResult, void *pUserData, int ClientID)
-{
-	CGameContext *pSelf = (CGameContext *)pUserData;
-
-	if(!pSelf->m_apPlayers[ClientID])
-		return;
-	
-	if(!pSelf->m_apPlayers[ClientID]->m_admin_rainbow)
-		pSelf->m_apPlayers[ClientID]->m_admin_rainbow = true;
-	else
-		pSelf->m_apPlayers[ClientID]->m_admin_rainbow = false;
 }
 
 void CGameContext::ConRainbow(IConsole::IResult *pResult, void *pUserData, int ClientID)

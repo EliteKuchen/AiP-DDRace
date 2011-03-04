@@ -160,6 +160,7 @@ public:
 	int GetClientInfo(int ClientID, CClientInfo *pInfo);
 	void GetClientAddr(int ClientID, NETADDR *pAddr);
 	void GetClientIP(int ClientID, char *pIPString, int Size);
+	void GetClientIPRange(int ClientID, char *pIPString, int Size);
 	const char *ClientName(int ClientID);
 	bool ClientIngame(int ClientID);
 

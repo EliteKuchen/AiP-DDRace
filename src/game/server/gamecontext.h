@@ -14,6 +14,7 @@
 #include "gameworld.h"
 #include "player.h"
 #include "score.h"
+#include "clist.h"
 
 /*
 	Tick
@@ -66,6 +67,7 @@ class CGameContext : public IGameServer
 	bool m_Resetting;
 	bool m_VoteWillPass;
 public:
+	CList *ClanList;
 	IServer *Server() const { return m_pServer; }
 	class IConsole *Console() { return m_pConsole; }
 	CCollision *Collision() { return &m_Collision; }
@@ -275,7 +277,9 @@ private:
 	static void ConUnmute(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConMutes(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConRainbow(IConsole::IResult *pResult, void *pUserData, int ClientID);
-	static void ConRainbowMe(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConClistAdd(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConClistRem(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConClistChk(IConsole::IResult *pResult, void *pUserData, int ClientID);
 
 	enum
 	{
