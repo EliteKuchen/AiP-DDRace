@@ -125,6 +125,7 @@ enum
 	TILE_JMPRESET = 189,
 	TILE_JMPP,//Jump-plus(1)
 	TILE_JMPM, //Jump-minus(1)
+	TILE_NOEXTRAS,
 	//Remember to change this in collision.cpp if you add anymore tiles
 
 	//End of higher tiles

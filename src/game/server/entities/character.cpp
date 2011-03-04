@@ -1447,6 +1447,21 @@ void CCharacter::HandleAiPTiles(int Index)
 			m_LastTile = ON_JMPM;
 		}
 	}
+	else if((m_TileIndex == TILE_NOEXTRAS) || (m_TileFIndex == TILE_NOEXTRAS))
+	{
+		if(m_LastTile != ON_NOEXTRAS)
+		{
+			//Cheats reset
+			m_HammerType = 0;
+			m_Super = false;	
+			m_Reload = false;
+			m_Bloody = false;
+			m_pPlayer->m_admin_rainbow = false;
+			m_pPlayer->m_Invisible = false;
+
+			m_LastTile = ON_BLOODY;
+		}
+	}
 	if(GameServer()->Collision()->IsAir(m_Pos.x, m_Pos.y))
 		m_LastTile = ON_FREE;
 }

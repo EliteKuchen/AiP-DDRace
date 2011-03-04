@@ -267,6 +267,7 @@ enum//for int m_LastTile
 	ON_BLOODY,
 	ON_JMPRESET,
 	ON_JMPP,
-	ON_JMPM
+	ON_JMPM,
+	ON_NOEXTRAS
 };
 #endif
