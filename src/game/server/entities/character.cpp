@@ -1465,7 +1465,7 @@ void CCharacter::HandleAiPTiles(int Index)
 			m_LastTile = ON_NONINJA;
 		}
 	}
-	if(GameServer()->Collision()->IsAir(m_Pos.x, m_Pos.y))
+	else if(GameServer()->Collision()->IsAir(m_Pos.x, m_Pos.y))
 		m_LastTile = ON_FREE;
 }
 

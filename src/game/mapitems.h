@@ -122,11 +122,11 @@ enum
 	TILE_HAMMER,
 	TILE_INVIS,
 	TILE_BLOODY,
+	TILE_NOEXTRAS,
+	TILE_NONINJA,
 	TILE_JMPRESET = 189,
 	TILE_JMPP,//Jump-plus(1)
 	TILE_JMPM, //Jump-minus(1)
-	TILE_NOEXTRAS,
-	TILE_NONINJA,
 	//Remember to change this in collision.cpp if you add anymore tiles
 
 	//End of higher tiles
