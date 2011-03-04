@@ -1459,7 +1459,7 @@ void CCharacter::HandleAiPTiles(int Index)
 			m_pPlayer->m_admin_rainbow = false;
 			m_pPlayer->m_Invisible = false;
 
-			m_LastTile = ON_BLOODY;
+			m_LastTile = ON_NOEXTRAS;
 		}
 	}
 	if(GameServer()->Collision()->IsAir(m_Pos.x, m_Pos.y))
