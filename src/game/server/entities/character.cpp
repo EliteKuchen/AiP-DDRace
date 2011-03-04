@@ -612,8 +612,6 @@ void CCharacter::Tick()
 		m_pPlayer->m_ForceBalanced = false;
 	}*/
 	DDRaceTick();
-	
-	AiPTick();
 
 	m_Core.m_Input = m_Input;
 	m_Core.Tick(true);
@@ -632,6 +630,9 @@ void CCharacter::Tick()
 	HandleWeapons();
 
 	DDRacePostCoreTick();
+	
+	AiPTick();
+
 	m_PlayerState = m_Input.m_PlayerState;
 
 	// Previnput
