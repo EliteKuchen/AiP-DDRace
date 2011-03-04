@@ -1462,6 +1462,19 @@ void CCharacter::HandleAiPTiles(int Index)
 			m_LastTile = ON_NOEXTRAS;
 		}
 	}
+	else if((m_TileIndex == TILE_NONINJA) || (m_TileFIndex == TILE_NONINJA))
+	{
+		if(m_LastTile != ON_NONINJA && m_aWeapons[WEAPON_NINJA].m_Got)
+		{
+			m_aWeapons[WEAPON_NINJA].m_Got = false;
+			m_ActiveWeapon = m_LastWeapon;
+			if(m_ActiveWeapon == WEAPON_NINJA)
+				m_ActiveWeapon = WEAPON_GUN;
+			SetWeapon(m_ActiveWeapon);
+
+			m_LastTile = ON_NONINJA;
+		}
+	}
 	if(GameServer()->Collision()->IsAir(m_Pos.x, m_Pos.y))
 		m_LastTile = ON_FREE;
 }

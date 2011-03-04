@@ -268,6 +268,7 @@ enum//for int m_LastTile
 	ON_JMPRESET,
 	ON_JMPP,
 	ON_JMPM,
-	ON_NOEXTRAS
+	ON_NOEXTRAS,
+	ON_NONINJA
 };
 #endif
