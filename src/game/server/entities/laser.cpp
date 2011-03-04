@@ -103,8 +103,9 @@ void CLaser::DoBounce()
 			
 			if(m_Bounces > GameServer()->Tuning()->m_LaserBounceNum)
 				m_Energy = -1;
-				
-			GameServer()->CreateSound(m_Pos, SOUND_RIFLE_BOUNCE, OwnerChar->Teams()->TeamMask(OwnerChar->Team()));
+			
+			if(!OwnerChar->m_Reload || (OwnerChar->m_Reload && g_Config.m_SvSilentReload))
+				GameServer()->CreateSound(m_Pos, SOUND_RIFLE_BOUNCE, OwnerChar->Teams()->TeamMask(OwnerChar->Team()));
 		}
 	}
 	else

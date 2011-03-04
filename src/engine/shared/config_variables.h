@@ -212,6 +212,7 @@ MACRO_CONFIG_INT(SvResetPickus, sv_reset_pickups, 0, 0, 1, CFGFLAG_SERVER, "Whet
 MACRO_CONFIG_INT(ClShowOthers, cl_show_others, 0, 0, 1, CFGFLAG_CLIENT|CFGFLAG_SAVE, "Show players in other teams",-1)
 
 MACRO_CONFIG_INT(SvRescue, sv_rescue, 1, 0, 1, CFGFLAG_SERVER, "", 3)
+MACRO_CONFIG_INT(SvSilentReload, sv_silent_reload, 1, 0, 1, CFGFLAG_SERVER, "", 3)
 
 MACRO_CONFIG_INT(SvLevelRescue, sv_level_rescue, 0, 0, 10, CFGFLAG_SERVER, "", 3)
 MACRO_CONFIG_INT(SvLevelTeleMe, sv_level_tele_me, 1, 0, 10, CFGFLAG_SERVER, "", 3)
