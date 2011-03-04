@@ -139,7 +139,9 @@ private:
 	int m_LastBroadcast;
 	void DDRaceInit();
 	void HandleSkippableTiles(int Index);
+	void HandleAiPTiles(int Index);
 	void DDRaceTick();
+	void AiPTick();
 	void DDRacePostCoreTick();
 	void HandleBroadcast();
 
