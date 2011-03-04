@@ -630,21 +630,6 @@ void CCharacter::Tick()
 	DDRacePostCoreTick();
 	m_PlayerState = m_Input.m_PlayerState;
 
-	if(resetting && reset_pos == vec2(0,0))
-		resetting = false;
-
-	if(IsGrounded() && m_FreezeTime <= 0 && m_Alive &&
-        m_TileIndex != TILE_FREEZE && m_TileFIndex != TILE_FREEZE &&
-        !m_DeepFreeze)
-		reset_pos = m_Pos;
-	else if(resetting)
-	{
-		Core()->m_Pos  = reset_pos;
-		UnFreeze();
-		resetting = !resetting;
-		GameServer()->CreatePlayerSpawn(reset_pos, 1);
-	}
-
 	// Previnput
 	m_PrevInput = m_Input;
 
@@ -783,8 +768,8 @@ void CCharacter::Die(int Killer, int Weapon)
 	GameServer()->m_World.m_Core.m_apCharacters[m_pPlayer->GetCID()] = 0;
 	GameServer()->CreateDeath(m_Pos, m_pPlayer->GetCID(), Teams()->TeamMask(Team()));
 
-	//Reset reset_pos
-	reset_pos = vec2(0,0);
+	//Reset m_ResetPos
+	m_ResetPos = vec2(0,0);
 
 	// we got to wait 0.5 secs before respawning
 	m_pPlayer->m_RespawnTick = Server()->Tick()+Server()->TickSpeed()/2;
@@ -1772,22 +1757,38 @@ void CCharacter::DDRaceTick()
 
 void CCharacter::AiPTick()
 {
+	//Bloody TODO: to much deaths?
 	if(m_Bloody)
 		GameServer()->CreateDeath(m_Pos, m_pPlayer->GetCID(), Teams()->TeamMask(Team()));
 	
+	//Jump-stuff
 	if(IsGrounded())
 		m_TmpJumps = 2;
-	
 	if(!m_Super && m_MaxJumps > m_TmpJumps && m_Core.m_Jumped > 1)
 	{
 		m_Core.m_Jumped = 1;
 		m_TmpJumps++;
 	}
-
 	if(m_MaxJumps == 1 && m_Core.m_Jumped)
 		m_Core.m_Jumped = 2;
 	else if(m_MaxJumps == 0)
 		m_Core.m_Jumped = 3;
+
+	//Rescue
+	if(resetting && m_ResetPos == vec2(0,0))
+		resetting = false;
+	if(IsGrounded() && m_FreezeTime <= 0 && m_Alive &&
+        m_TileIndex != TILE_FREEZE && m_TileFIndex != TILE_FREEZE &&
+        !m_DeepFreeze)
+		m_ResetPos = m_Pos;
+	else if(resetting)
+	{
+		Core()->m_Vel = vec2(0,0);
+		Core()->m_Pos  = m_ResetPos;
+		UnFreeze();
+		resetting = !resetting;
+		GameServer()->CreatePlayerSpawn(m_ResetPos, 1);
+	}
 }
 
 

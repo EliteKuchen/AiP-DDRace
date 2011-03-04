@@ -116,6 +116,8 @@ public:
 		bool m_EndlessHook;
 		int m_PauseTime;
 		int m_Team;
+		
+		vec2 m_ResetPos;
 	} m_PauseInfo;
 	bool m_InfoSaved;
 	void LoadCharacter();

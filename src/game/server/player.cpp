@@ -295,6 +295,9 @@ void CPlayer::LoadCharacter()
 	Character->m_Super = m_PauseInfo.m_Super;
 	Character->m_DeepFreeze = m_PauseInfo.m_DeepFreeze;
 	Character->m_EndlessHook = m_PauseInfo.m_EndlessHook;
+	
+	Character->m_ResetPos = m_PauseInfo.m_ResetPos;
+
 	CGameControllerDDRace* Controller = (CGameControllerDDRace*)GameServer()->m_pController;
 	Controller->m_Teams.m_Core.Team(GetCID(), m_PauseInfo.m_Team);
 	m_PauseInfo.m_Respawn = false;
@@ -324,4 +327,6 @@ void CPlayer::SaveCharacter()
 	m_PauseInfo.m_Team = Controller->m_Teams.m_Core.Team(GetCID());
 	m_PauseInfo.m_PauseTime = Server()->Tick();
 	//m_PauseInfo.m_RefreshTime = Character->m_RefreshTime;
+
+	m_PauseInfo.m_ResetPos = Character->m_ResetPos;
 }

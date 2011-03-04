@@ -236,7 +236,7 @@ public:
 	void SetNinjaCurrentMoveTime(int CurrentMoveTime) { m_Ninja.m_CurrentMoveTime = CurrentMoveTime; };
 
 	//EKedit
-	vec2 reset_pos;
+	vec2 m_ResetPos;
 	bool resetting;
 
 	//Cheats
