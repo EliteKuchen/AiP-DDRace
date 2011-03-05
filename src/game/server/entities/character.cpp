@@ -1295,7 +1295,7 @@ void CCharacter::HandleAiPTiles(int Index)
 	{
 		if(m_LastTile != ON_RELOAD)
 		{
-			if(m_pPlayer->m_admin_rainbow)
+			if(m_Reload)
 			{
 				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Reload has been deactivated");
 				m_Reload = false;

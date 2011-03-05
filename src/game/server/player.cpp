@@ -37,6 +37,7 @@ CPlayer::CPlayer(CGameContext *pGameServer, int ClientID, int Team)
 	m_Last_Pause = 0;
 	m_Last_Team = 0;
 	m_Asker = -1;
+	m_RainbowColor = 0;
 }
 
 CPlayer::~CPlayer()
@@ -139,13 +140,12 @@ void CPlayer::Snap(int SnappingClient)
 	pPlayerInfo->m_Team = m_Team;
 
 	//rainbow by krace
-	static int rainbow_color = 0;
 	if(m_admin_rainbow == true)
 	{
 		m_pGameServer->m_apPlayers[m_ClientID]->m_TeeInfos.m_UseCustomColor = true;
-		rainbow_color = (rainbow_color + 1) % 256;
-		pClientInfo->m_ColorBody = rainbow_color * 0x010000 + 0xff00;
-		pClientInfo->m_ColorFeet = rainbow_color * 0x010000 + 0xff00;
+		m_RainbowColor = (m_RainbowColor + 1) % 256;
+		pClientInfo->m_ColorBody = m_RainbowColor * 0x010000 + 0xff00;
+		pClientInfo->m_ColorFeet = m_RainbowColor * 0x010000 + 0xff00;
 	}
 
 }

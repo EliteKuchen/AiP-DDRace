@@ -138,6 +138,7 @@ public:
 	int m_AskedTick; // when was this player asked by another player
 	int m_Asked; // who did this player ask
 	int m_AskerTick; // when did this player ask another player
+	int m_RainbowColor;
 
 	bool m_admin_rainbow;
 
