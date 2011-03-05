@@ -1591,6 +1591,7 @@ void CCharacter::HandleTiles(int Index)
 				m_Reload = false;
 				m_Bloody = false;
 				m_Super = false;
+				m_MaxJumps = 2;
 				m_pPlayer->m_Invisible = false;
 			}
 		}
