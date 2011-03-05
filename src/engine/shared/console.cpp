@@ -302,7 +302,7 @@ void CConsole::ExecuteLineStroked(int Stroke, const char *pStr, const int Client
 				pCommand->m_Level = g_Config.m_SvLevelInvis;
 			else if(!strncmp(pCommand->m_pName, "invis", 5))
 				pCommand->m_Level = g_Config.m_SvLevelWeapons;
-			else if(!strncmp(pCommand->m_pName, "r", 1))
+			else if(!strncmp(pCommand->m_pName, "r", 1) && strncmp(pCommand->m_pName, "restart", 7))
 				pCommand->m_Level = g_Config.m_SvLevelRescue;
 			else if((!strncmp(pCommand->m_pName, "down", 4)) || (!strncmp(pCommand->m_pName, "right", 4)) ||
 					(!strncmp(pCommand->m_pName, "left", 4)) || (!strncmp(pCommand->m_pName, "up", 2)))

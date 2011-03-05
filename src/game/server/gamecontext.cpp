@@ -1137,9 +1137,6 @@ void CGameContext::ConRestart(IConsole::IResult *pResult, void *pUserData, int C
 {
 	CGameContext *pSelf = (CGameContext *)pUserData;
 
-	if(pSelf->m_apPlayers[ClientID]->m_Authed <= 2)
-		return;
-
 	if(pResult->NumArguments())
 		pSelf->m_pController->DoWarmup(pResult->GetInteger(0));
 	else
@@ -1295,7 +1292,7 @@ void CGameContext::OnConsoleInit()
 	Console()->Register("tune_dump", "", CFGFLAG_SERVER, ConTuneDump, this, "", 3);
 
 	Console()->Register("change_map", "?r", CFGFLAG_SERVER, ConChangeMap, this, "", 3);
-	Console()->Register("restart", "?i", CFGFLAG_SERVER, ConRestart, this, "", 3);//REMEBER: change ConRestart if you change level
+	Console()->Register("restart", "?i", CFGFLAG_SERVER, ConRestart, this, "", 3);
 	Console()->Register("broadcast", "r", CFGFLAG_SERVER, ConBroadcast, this, "", 2);
 	Console()->Register("say", "r", CFGFLAG_SERVER, ConSay, this, "", 3);
 	Console()->Register("set_team", "vi", CFGFLAG_SERVER, ConSetTeam, this, "", 2);
