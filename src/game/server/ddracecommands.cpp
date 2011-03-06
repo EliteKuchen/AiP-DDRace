@@ -92,32 +92,10 @@ void CGameContext::ConBloody(IConsole::IResult *pResult, void *pUserData, int Cl
 	pChr->m_Bloody = true;
 }
 
-void CGameContext::ConBloodyMe(IConsole::IResult *pResult, void *pUserData, int ClientID)
-{
-	CGameContext *pSelf = (CGameContext *)pUserData;
-	CCharacter* pChr = pSelf->GetPlayerChar(ClientID);
-
-	if(!pChr)
-		return;
-
-	pChr->m_Bloody = true;
-}
-
 void CGameContext::ConUnBloody(IConsole::IResult *pResult, void *pUserData, int ClientID)
 {
 	CGameContext *pSelf = (CGameContext *)pUserData;
 	CCharacter* pChr = pSelf->GetPlayerChar(pResult->GetVictim());
-
-	if(!pChr)
-		return;
-
-	pChr->m_Bloody = false;
-}
-
-void CGameContext::ConUnBloodyMe(IConsole::IResult *pResult, void *pUserData, int ClientID)
-{
-	CGameContext *pSelf = (CGameContext *)pUserData;
-	CCharacter* pChr = pSelf->GetPlayerChar(ClientID);
 
 	if(!pChr)
 		return;
@@ -174,21 +152,6 @@ void CGameContext::ConReload(IConsole::IResult *pResult, void *pUserData, int Cl
 	CGameContext *pSelf = (CGameContext *)pUserData;
 
 	CCharacter* pChr = pSelf->GetPlayerChar(pResult->GetVictim());
-
-	if(!pChr)
-		return;
-
-	pChr->m_Reload = true;
-
-	if(!g_Config.m_SvCheatTime)
-		pChr->m_DDRaceState = DDRACE_CHEAT;
-}
-
-void CGameContext::ConReloadMe(IConsole::IResult *pResult, void *pUserData, int ClientID)
-{
-	CGameContext *pSelf = (CGameContext *)pUserData;
-
-	CCharacter* pChr = pSelf->GetPlayerChar(ClientID);
 
 	if(!pChr)
 		return;
