@@ -284,7 +284,7 @@ void CConsole::ExecuteLineStroked(int Stroke, const char *pStr, const int Client
 			//TODO: Rewrite this
 			if(!strncmp(pCommand->m_pName, "super", 5))
 				pCommand->m_Level = g_Config.m_SvLevelSuper;
-			else if(!strncmp(pCommand->m_pName, "r", 1) && strncmp(pCommand->m_pName, "restart", 7))//REMEBER: r* commands after this
+			else if(!strcmp(pCommand->m_pName, "r") || !strcmp(pCommand->m_pName, "rescue"))//strcmp; not strncmp 'cause theres no <id> behind
 				pCommand->m_Level = g_Config.m_SvLevelRescue;
 			else if(!strncmp(pCommand->m_pName, "tele_me", 7))
 				pCommand->m_Level = g_Config.m_SvLevelTeleMe;

@@ -174,18 +174,6 @@ void CGameContext::ConUnReload(IConsole::IResult *pResult, void *pUserData, int 
 	pChr->m_Reload = false;
 }
 
-void CGameContext::ConUnReloadMe(IConsole::IResult *pResult, void *pUserData, int ClientID)
-{
-	CGameContext *pSelf = (CGameContext *)pUserData;
-
-	CCharacter* pChr = pSelf->GetPlayerChar(ClientID);
-
-	if(!pChr)
-		return;
-
-	pChr->m_Reload = false;
-}
-
 void CGameContext::ConRainbow(IConsole::IResult *pResult, void *pUserData, int ClientID)
 {
 	CGameContext *pSelf = (CGameContext *)pUserData;

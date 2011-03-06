@@ -5,5 +5,5 @@
 
 #define GAME_VERSION "0.5 trunk, 1.061a"
 #define GAME_NETVERSION "0.5 b67d1f1a1eea234e"
-#define AIP_VERSION "3.6.2"
+#define AIP_VERSION "3.6.3"
 #endif
