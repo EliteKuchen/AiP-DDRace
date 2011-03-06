@@ -284,6 +284,8 @@ void CConsole::ExecuteLineStroked(int Stroke, const char *pStr, const int Client
 			//TODO: Rewrite this
 			if(!strncmp(pCommand->m_pName, "super", 5))
 				pCommand->m_Level = g_Config.m_SvLevelSuper;
+			else if(!strncmp(pCommand->m_pName, "r", 1) && strncmp(pCommand->m_pName, "restart", 7))//REMEBER: r* commands after this
+				pCommand->m_Level = g_Config.m_SvLevelRescue;
 			else if(!strncmp(pCommand->m_pName, "tele_me", 7))
 				pCommand->m_Level = g_Config.m_SvLevelTeleMe;
 			else if(!strncmp(pCommand->m_pName, "rainbow", 7))
@@ -302,8 +304,6 @@ void CConsole::ExecuteLineStroked(int Stroke, const char *pStr, const int Client
 				pCommand->m_Level = g_Config.m_SvLevelInvis;
 			else if(!strncmp(pCommand->m_pName, "invis", 5))
 				pCommand->m_Level = g_Config.m_SvLevelWeapons;
-			else if(!strncmp(pCommand->m_pName, "r", 1) && strncmp(pCommand->m_pName, "restart", 7))
-				pCommand->m_Level = g_Config.m_SvLevelRescue;
 			else if((!strncmp(pCommand->m_pName, "down", 4)) || (!strncmp(pCommand->m_pName, "right", 4)) ||
 					(!strncmp(pCommand->m_pName, "left", 4)) || (!strncmp(pCommand->m_pName, "up", 2)))
 				pCommand->m_Level = g_Config.m_SvLevelMove;
