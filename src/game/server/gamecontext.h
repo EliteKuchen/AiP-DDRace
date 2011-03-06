@@ -170,22 +170,6 @@ public:
 	virtual const char *Version();
 	virtual const char *NetVersion();
 
-	static void ConRescue(IConsole::IResult *pResult, void *pUserData, int ClientID);
-	static void ConReload(IConsole::IResult *pResult, void *pUserData, int ClientID);
-	static void ConReloadMe(IConsole::IResult *pResult, void *pUserData, int ClientID);
-	static void ConUnReload(IConsole::IResult *pResult, void *pUserData, int ClientID);
-	static void ConUnReloadMe(IConsole::IResult *pResult, void *pUserData, int ClientID);
-	static void ConSetSkin(IConsole::IResult *pResult, void *pUserData, int ClientID);
-	static void ConSetName(IConsole::IResult *pResult, void *pUserData, int ClientID);
-	static void ConSetScore(IConsole::IResult *pResult, void *pUserData, int ClientID);
-	static void ConSayBy(IConsole::IResult *pResult, void *pUserData, int ClientID);
-	static void ConWhisper(IConsole::IResult *pResult, void *pUserData, int ClientID);
-	static void ConBloody(IConsole::IResult *pResult, void *pUserData, int ClientID);
-	static void ConBloodyMe(IConsole::IResult *pResult, void *pUserData, int ClientID);
-	static void ConUnBloody(IConsole::IResult *pResult, void *pUserData, int ClientID);
-	static void ConUnBloodyMe(IConsole::IResult *pResult, void *pUserData, int ClientID);
-	static void ConCallHelper(IConsole::IResult *pResult, void *pUserData, int ClientID);
-
 	//DDRace
 private:
 	class IScore *m_pScore;
@@ -276,6 +260,19 @@ private:
 	static void ConMuteIP(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConUnmute(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConMutes(IConsole::IResult *pResult, void *pUserData, int ClientID);
+
+	//EK-Con's
+	static void ConRescue(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConReload(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConUnReload(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConSetSkin(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConSetName(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConSetScore(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConSayBy(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConWhisper(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConBloody(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConUnBloody(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConCallHelper(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConRainbow(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConClistAdd(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConClistRem(IConsole::IResult *pResult, void *pUserData, int ClientID);
