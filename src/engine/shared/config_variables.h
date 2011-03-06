@@ -226,5 +226,6 @@ MACRO_CONFIG_INT(SvLevelMove, sv_level_move, 1, 0, 10, CFGFLAG_SERVER, "", 3)
 MACRO_CONFIG_INT(SvLevelWeapons, sv_level_weapons, 1, 0, 10, CFGFLAG_SERVER, "", 3)
 MACRO_CONFIG_INT(SvLevelInvis, sv_level_Invis, 2, 0, 10, CFGFLAG_SERVER, "", 3)//For more SvLevel's rewrite "CConsole::ExecuteLineStroked" (console.cpp)
 
+MACRO_CONFIG_STR(SvClistFile, sv_clist_file, 40, "ClanList.txt", CFGFLAG_SERVER, "...", 4)
 
 #endif

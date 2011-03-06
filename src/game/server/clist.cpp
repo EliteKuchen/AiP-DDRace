@@ -2,17 +2,18 @@
 
 #include <sstream>
 #include <fstream>
+#include <engine/shared/config.h>
 
 using namespace std;
 
 void CList::Load()
 {
 	fstream f;
-	f.open("ClanList.txt", ios::in);//Filename: g_Config.m_ClanFile (standart: "ClanList.txt") - TODO
+	f.open(g_Config.m_SvClistFile, ios::in);
 	ClanList.clear();
 	while (!f.eof() && !f.fail())
 	{
-		//temp-name/-ip to read an put in (list<CLItem>)ClanList
+		//name/tmpip to read an put in (list<CLItem>)ClanList
 		string name;
 		string tmpip;
 		getline(f, name);
@@ -28,7 +29,7 @@ void CList::Load()
 void CList::Save()
 {
 	fstream f;
-	f.open("ClanList.txt", ios::out);//Filename: g_Config.m_ClanFile (standart: "ClanList.txt") - TODO
+	f.open(g_Config.m_SvClistFile, ios::in);
 	if(!f.fail())
 		for(list<CLItem>::iterator i=ClanList.begin(); i!=ClanList.end(); i++)
 			f << i->name() << endl << i->ip() << endl;
@@ -37,6 +38,7 @@ void CList::Save()
 
 void CList::Show()
 {
+	Load();//TODO: If laggy/crashing remove that
 	dbg_msg("CList", "Clanlisted users:");
 	for(list<CLItem>::iterator i=ClanList.begin(); i!=ClanList.end(); i++)
 	{
@@ -48,6 +50,7 @@ void CList::Show()
 
 bool CList::Check(int CId)
 {
+	Load();//TODO: If laggy/crashing remove that
 	for(list<CLItem>::iterator i=ClanList.begin(); i!=ClanList.end(); i++)
 	{
 		char IpBuf[128];

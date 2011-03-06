@@ -854,6 +854,7 @@ void CGameContext::ConInfo(IConsole::IResult *pResult, void *pUserData, int Clie
 	pSelf->Console()->PrintResponse(IConsole::OUTPUT_LEVEL_STANDARD, "info", "Download Source: EliteKuchen.tk");
 	pSelf->Console()->PrintResponse(IConsole::OUTPUT_LEVEL_STANDARD, "info", "Commands: set_skin; set_name; set_score; say_by; whisper; (w;) reload; unreload; bloody; unbloody");
 	pSelf->Console()->PrintResponse(IConsole::OUTPUT_LEVEL_STANDARD, "info", "No id behind a command like 'super' is the same like super_me");
+	pSelf->Console()->PrintResponse(IConsole::OUTPUT_LEVEL_STANDARD, "info", "AiP-DDRace Version : " AIP_VERSION);
 }
 
 void CGameContext::ConHelp(IConsole::IResult *pResult, void *pUserData, int ClientID)
