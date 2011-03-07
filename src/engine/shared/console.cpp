@@ -284,27 +284,27 @@ void CConsole::ExecuteLineStroked(int Stroke, const char *pStr, const int Client
 			//TODO: Rewrite this
 			if(!strncmp(pCommand->m_pName, "super", 5))
 				pCommand->m_Level = g_Config.m_SvLevelSuper;
-			else if(!strcmp(pCommand->m_pName, "r") || !strcmp(pCommand->m_pName, "rescue"))//strcmp; not strncmp 'cause theres no <id> behind
+			if(!strcmp(pCommand->m_pName, "r") || !strcmp(pCommand->m_pName, "rescue"))//strcmp; not strncmp 'cause theres no <id> behind
 				pCommand->m_Level = g_Config.m_SvLevelRescue;
-			else if(!strncmp(pCommand->m_pName, "tele_me", 7))
+			if(!strncmp(pCommand->m_pName, "tele_me", 7))
 				pCommand->m_Level = g_Config.m_SvLevelTeleMe;
-			else if(!strncmp(pCommand->m_pName, "rainbow", 7))
+			if(!strncmp(pCommand->m_pName, "rainbow", 7))
 				pCommand->m_Level = g_Config.m_SvLevelRainbow;
-			else if(!strncmp(pCommand->m_pName, "reload", 6))
+			if(!strncmp(pCommand->m_pName, "reload", 6))
 				pCommand->m_Level = g_Config.m_SvLevelReload;
-			else if(!strncmp(pCommand->m_pName, "bloody", 6))
+			if(!strncmp(pCommand->m_pName, "bloody", 6))
 				pCommand->m_Level = g_Config.m_SvLevelBloody;
-			else if(!strncmp(pCommand->m_pName, "w", 1))
+			if(!strncmp(pCommand->m_pName, "w", 1))
 				pCommand->m_Level = g_Config.m_SvLevelWhisper;
-			else if(!strncmp(pCommand->m_pName, "hammer", 6))
+			if(!strncmp(pCommand->m_pName, "hammer", 6))
 				pCommand->m_Level = g_Config.m_SvLevelHammer;
-			else if(!strncmp(pCommand->m_pName, "hammer", 6))
+			if(!strncmp(pCommand->m_pName, "hammer", 6))
 				pCommand->m_Level = g_Config.m_SvLevelHammer;
-			else if(!strncmp(pCommand->m_pName, "weapons", 7))
+			if(!strncmp(pCommand->m_pName, "weapons", 7))
 				pCommand->m_Level = g_Config.m_SvLevelInvis;
-			else if(!strncmp(pCommand->m_pName, "invis", 5))
+			if(!strncmp(pCommand->m_pName, "invis", 5))
 				pCommand->m_Level = g_Config.m_SvLevelWeapons;
-			else if((!strncmp(pCommand->m_pName, "down", 4)) || (!strncmp(pCommand->m_pName, "right", 4)) ||
+			if((!strncmp(pCommand->m_pName, "down", 4)) || (!strncmp(pCommand->m_pName, "right", 4)) ||
 					(!strncmp(pCommand->m_pName, "left", 4)) || (!strncmp(pCommand->m_pName, "up", 2)))
 				pCommand->m_Level = g_Config.m_SvLevelMove;
 
