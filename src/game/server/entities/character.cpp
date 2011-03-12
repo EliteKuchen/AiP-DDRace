@@ -1107,7 +1107,17 @@ void CCharacter::HandleBroadcast()
 	{
 		if (m_DDRaceState == DDRACE_STARTED)
 		{
-			if(m_CpActive != -1 && m_CpTick > Server()->Tick() && !m_pPlayer->m_IsUsingDDRaceClient)
+			if( g_Config.m_SvBroadcast[0]==0 && (Server()->Tick() > (m_LastBroadcast + (Server()->TickSpeed()) / 11)))
+			{
+				float tsrv_s = (Server()->server_time()) / (float)Server()->TickSpeed();
+				float tsrv_m = tsrv_s / 60;
+				float tsrv_h = tsrv_s / 3600;
+				float tsrv_d = tsrv_s / (3600 * 24);
+				str_format(aBroadcast, sizeof(aBroadcast), "Server Online: %.0fd %.0fh %.0fm %.0fs", tsrv_d-0.5, (tsrv_h - (24 * (int)tsrv_d))-0.5, (tsrv_m - (60 * (int)tsrv_h))-0.5, (tsrv_s - (60 * (int)tsrv_m))-0.5);
+				GameServer()->SendBroadcast(aBroadcast, m_pPlayer->GetCID());
+				m_LastBroadcast = Server()->Tick();
+			}
+			else if(m_CpActive != -1 && m_CpTick > Server()->Tick() && !m_pPlayer->m_IsUsingDDRaceClient)
 			{
 				if(pData->m_BestTime && pData->m_aBestCpTime[m_CpActive] != 0)
 				{
@@ -1127,21 +1137,21 @@ void CCharacter::HandleBroadcast()
 					m_LastBroadcast = Server()->Tick();
 				}
 			}
-			else if( g_Config.m_SvBroadcast[0]==0 && (Server()->Tick() > (m_LastBroadcast + (Server()->TickSpeed()) / 11)))
-			{
-                float tsrv_s = (Server()->server_time()) / (float)Server()->TickSpeed();
-                float tsrv_m = tsrv_s / 60;
-                float tsrv_h = tsrv_s / 3600;
-                float tsrv_d = tsrv_s / (3600 * 24);
-				str_format(aBroadcast, sizeof(aBroadcast), "Server Online: %.0fd %.0fh %.0fm %.0fs", tsrv_d-0.5, (tsrv_h - (24 * (int)tsrv_d))-0.5, (tsrv_m - (60 * (int)tsrv_h))-0.5, (tsrv_s - (60 * (int)tsrv_m))-0.5);
-				GameServer()->SendBroadcast(aBroadcast, m_pPlayer->GetCID());
-				m_LastBroadcast = Server()->Tick();
-			}
 		}
 		else
 		{
 			char aTmp[128];
-			if(!m_pPlayer->m_IsUsingDDRaceClient)
+			if(g_Config.m_SvBroadcast[0]==0 && (Server()->Tick() > (m_LastBroadcast + (Server()->TickSpeed()) / 11)))
+			{
+				float tsrv_s = (Server()->server_time()) / (float)Server()->TickSpeed();
+				float tsrv_m = tsrv_s / 60;
+				float tsrv_h = tsrv_s / 3600;
+				float tsrv_d = tsrv_s / (3600 * 24);
+				str_format(aTmp, sizeof(aTmp), "Server Online: %.0fd %.0fh %.0fm %.0fs", tsrv_d-0.5, (tsrv_h - (24 * (int)tsrv_d))-0.5, (tsrv_m - (60 * (int)tsrv_h))-0.5, (tsrv_s - (60 * (int)tsrv_m))-0.5);
+				GameServer()->SendBroadcast(aTmp, m_pPlayer->GetCID());
+				m_LastBroadcast = Server()->Tick();
+			}
+			else if(!m_pPlayer->m_IsUsingDDRaceClient)
 			{
 				if( g_Config.m_SvBroadcast[0] != 0 && (Server()->Tick() > (m_LastBroadcast + (Server()->TickSpeed()*9))))
 				{
@@ -1159,16 +1169,6 @@ void CCharacter::HandleBroadcast()
 			else if( g_Config.m_SvBroadcast[0] != 0 && (Server()->Tick() > (m_LastBroadcast + (Server()->TickSpeed()*9))))
 			{
 				str_format(aTmp, sizeof(aTmp), "%s", g_Config.m_SvBroadcast);
-				GameServer()->SendBroadcast(aTmp, m_pPlayer->GetCID());
-				m_LastBroadcast = Server()->Tick();
-			}
-			if( g_Config.m_SvBroadcast[0]==0 && (Server()->Tick() > (m_LastBroadcast + (Server()->TickSpeed()) / 11)))
-			{
-                float tsrv_s = (Server()->server_time()) / (float)Server()->TickSpeed();
-                float tsrv_m = tsrv_s / 60;
-                float tsrv_h = tsrv_s / 3600;
-                float tsrv_d = tsrv_s / (3600 * 24);
-				str_format(aTmp, sizeof(aTmp), "Server Online: %.0fd %.0fh %.0fm %.0fs", tsrv_d-0.5, (tsrv_h - (24 * (int)tsrv_d))-0.5, (tsrv_m - (60 * (int)tsrv_h))-0.5, (tsrv_s - (60 * (int)tsrv_m))-0.5);
 				GameServer()->SendBroadcast(aTmp, m_pPlayer->GetCID());
 				m_LastBroadcast = Server()->Tick();
 			}
@@ -1271,8 +1271,8 @@ void CCharacter::HandleSkippableTiles(int Index)
 
 void CCharacter::HandleAiPTiles(int Index)
 {
-	/*m_TileIndex = GameServer()->Collision()->GetTileIndex(Index);
-	m_TileFIndex = GameServer()->Collision()->GetFTileIndex(MapIndex);*/
+	m_TileIndex = GameServer()->Collision()->GetTileIndex(Index);
+	m_TileFIndex = GameServer()->Collision()->GetFTileIndex(MapIndex);
 
 	if(m_TileIndex == TILE_RAINBOW || m_TileFIndex == TILE_RAINBOW)
 	{
@@ -1312,7 +1312,7 @@ void CCharacter::HandleAiPTiles(int Index)
 	{
 		if(m_LastTile != ON_ADMIN)
 		{
-			m_LastTile = ON_ADMIN;
+			m_LastTile = ON_ADMIN; //not necessary
 			if(m_pPlayer->m_Authed <= 1)
 			{
 				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"AdminZone!!!");
@@ -1324,8 +1324,8 @@ void CCharacter::HandleAiPTiles(int Index)
 	{
 		if(m_LastTile != ON_MEMBER)
 		{
-			m_LastTile = ON_MEMBER;
-			if(!GameServer()->ClanList->Check(GetPlayer()->GetCID()))//CLANLIST CHECK
+			m_LastTile = ON_MEMBER; //not necessary
+			if(!GameServer()->ClanList->Check(GetPlayer()->GetCID()))
 			{
 				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"ClanZone!!!");
 				Die(GetPlayer()->GetCID(), WEAPON_GAME);
@@ -1789,11 +1789,12 @@ void CCharacter::AiPTick()
 		m_ResetPos = m_Pos;
 	else if(resetting)
 	{
+		GameServer()->CreateDeath(m_Pos, m_pPlayer->GetCID(), Teams()->TeamMask(Team())); //Rescue effect I (old position)
 		Core()->m_Vel = vec2(0,0);
 		Core()->m_Pos  = m_ResetPos;
 		UnFreeze();
 		resetting = !resetting;
-		GameServer()->CreatePlayerSpawn(m_ResetPos, 1);
+		GameServer()->CreatePlayerSpawn(m_ResetPos, 1); //Rescue effect II (new position)
 	}
 }
 
