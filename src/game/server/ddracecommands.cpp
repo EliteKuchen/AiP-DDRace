@@ -89,7 +89,7 @@ void CGameContext::ConBloody(IConsole::IResult *pResult, void *pUserData, int Cl
 	if(!pChr)
 		return;
 
-	pChr->m_Bloody = true;
+	pSelf->m_apPlayers[pResult->GetVictim()]->Cheats.Bloody = true;
 }
 
 void CGameContext::ConUnBloody(IConsole::IResult *pResult, void *pUserData, int ClientID)
@@ -100,7 +100,7 @@ void CGameContext::ConUnBloody(IConsole::IResult *pResult, void *pUserData, int 
 	if(!pChr)
 		return;
 
-	pChr->m_Bloody = false;
+	pSelf->m_apPlayers[pResult->GetVictim()]->Cheats.Bloody = false;
 }
 
 void CGameContext::ConSetSkin(IConsole::IResult *pResult, void *pUserData, int ClientID)
@@ -156,7 +156,7 @@ void CGameContext::ConReload(IConsole::IResult *pResult, void *pUserData, int Cl
 	if(!pChr)
 		return;
 
-	pChr->m_Reload = true;
+	pSelf->m_apPlayers[pResult->GetVictim()]->Cheats.Reload = true;
 
 	if(!g_Config.m_SvCheatTime)
 		pChr->m_DDRaceState = DDRACE_CHEAT;
@@ -171,7 +171,7 @@ void CGameContext::ConUnReload(IConsole::IResult *pResult, void *pUserData, int 
 	if(!pChr)
 		return;
 
-	pChr->m_Reload = false;
+	pSelf->m_apPlayers[pResult->GetVictim()]->Cheats.Reload = false;
 }
 
 void CGameContext::ConRainbow(IConsole::IResult *pResult, void *pUserData, int ClientID)
@@ -183,10 +183,10 @@ void CGameContext::ConRainbow(IConsole::IResult *pResult, void *pUserData, int C
 	if(!pSelf->m_apPlayers[Victim])
 		return;
 	
-	if(!pSelf->m_apPlayers[Victim]->m_admin_rainbow)
-		pSelf->m_apPlayers[Victim]->m_admin_rainbow = true;
+	if(!pSelf->m_apPlayers[Victim]->Cheats.Rainbow)
+		pSelf->m_apPlayers[Victim]->Cheats.Rainbow = true;
 	else
-		pSelf->m_apPlayers[Victim]->m_admin_rainbow = false;
+		pSelf->m_apPlayers[Victim]->Cheats.Rainbow = false;
 }
 
 void CGameContext::ConGoLeft(IConsole::IResult *pResult, void *pUserData, int ClientID)
@@ -329,7 +329,7 @@ void CGameContext::ConHammer(IConsole::IResult *pResult, void *pUserData, int Cl
 	}
 	else
 	{
-		pChr->m_HammerType = Type;
+		pSelf->m_apPlayers[Victim]->Cheats.HammerType = Type;
 		if(!g_Config.m_SvCheatTime)
 			pChr->m_DDRaceState = DDRACE_CHEAT;
 		str_format(aBuf, sizeof(aBuf), "Hammer of '%s' ClientID=%d setted to %d", pServ->ClientName(Victim), Victim, Type);
@@ -357,7 +357,7 @@ void CGameContext::ConHammerMe(IConsole::IResult *pResult, void *pUserData, int 
 	}
 	else
 	{
-		pChr->m_HammerType = Type;
+		pSelf->m_apPlayers[ClientID]->Cheats.HammerType = Type;
 		if(!g_Config.m_SvCheatTime)
 			pChr->m_DDRaceState = DDRACE_CHEAT;
 		str_format(aBuf, sizeof(aBuf), "Hammer of '%s' ClientID=%d setted to %d", pServ->ClientName(ClientID), ClientID, Type);
@@ -370,28 +370,12 @@ void CGameContext::ConSuper(IConsole::IResult *pResult, void *pUserData, int Cli
 	CGameContext *pSelf = (CGameContext *)pUserData;
 	int Victim = pResult->GetVictim();
 	CCharacter* pChr = pSelf->GetPlayerChar(Victim);
-	if(pChr && !pChr->m_Super)
+	if(pChr && !pSelf->m_apPlayers[Victim]->Cheats.Super)
 	{
-		pChr->m_Super = true;
+		pSelf->m_apPlayers[Victim]->Cheats.Super = true;
 		pChr->UnFreeze();
 		pChr->m_TeamBeforeSuper = pChr->Team();
 		pChr->Teams()->SetCharacterTeam(Victim, TEAM_SUPER);
-		if(!g_Config.m_SvCheatTime)
-			pChr->m_DDRaceState = DDRACE_CHEAT;
-	}
-}
-
-void CGameContext::ConSuperMe(IConsole::IResult *pResult, void *pUserData, int ClientID)
-{
-    CGameContext *pSelf = (CGameContext *)pUserData;
-
-	CCharacter* pChr = pSelf->GetPlayerChar(ClientID);
-	if(pChr && !pChr->m_Super)
-	{
-		pChr->m_Super = true;
-		pChr->UnFreeze();
-		pChr->m_TeamBeforeSuper = pChr->Team();
-		pChr->Teams()->SetCharacterTeam(ClientID, TEAM_SUPER);
 		if(!g_Config.m_SvCheatTime)
 			pChr->m_DDRaceState = DDRACE_CHEAT;
 	}
@@ -402,22 +386,10 @@ void CGameContext::ConUnSuper(IConsole::IResult *pResult, void *pUserData, int C
 	CGameContext *pSelf = (CGameContext *)pUserData;
 	int Victim = pResult->GetVictim();
 	CCharacter* pChr = pSelf->GetPlayerChar(Victim);
-	if(pChr && pChr->m_Super)
+	if(pChr && pSelf->m_apPlayers[Victim]->Cheats.Super)
 	{
-		pChr->m_Super = false;
+		pSelf->m_apPlayers[Victim]->Cheats.Super = false;
 		pChr->Teams()->SetForceCharacterTeam(Victim, pChr->m_TeamBeforeSuper);
-	}
-}
-
-void CGameContext::ConUnSuperMe(IConsole::IResult *pResult, void *pUserData, int ClientID)
-{
-    CGameContext *pSelf = (CGameContext *)pUserData;
-
-	CCharacter* pChr = pSelf->GetPlayerChar(ClientID);
-	if(pChr && pChr->m_Super)
-	{
-		pChr->m_Super = false;
-		pChr->Teams()->SetForceCharacterTeam(ClientID, pChr->m_TeamBeforeSuper);
 	}
 }
 
@@ -443,12 +415,6 @@ void CGameContext::ConWeapons(IConsole::IResult *pResult, void *pUserData, int C
 {
 	CGameContext *pSelf = (CGameContext *)pUserData;
 	pSelf->ModifyWeapons(ClientID, pResult->GetVictim(), -1, false);
-}
-
-void CGameContext::ConWeaponsMe(IConsole::IResult *pResult, void *pUserData, int ClientID)
-{
-	CGameContext *pSelf = (CGameContext *)pUserData;
-	pSelf->ModifyWeapons(ClientID, ClientID, -1, false);
 }
 
 void CGameContext::ConUnShotgun(IConsole::IResult *pResult, void *pUserData, int ClientID)
@@ -724,7 +690,7 @@ void CGameContext::ConInvis(IConsole::IResult *pResult, void *pUserData, int Cli
 
 	if(pSelf->m_apPlayers[Victim])
 	{
-		pSelf->m_apPlayers[Victim]->m_Invisible = true;
+		pSelf->m_apPlayers[Victim]->Cheats.Invisible = true;
 		CServer* pServ = (CServer*)pSelf->Server();
 		str_format(aBuf, sizeof(aBuf), "'%s' ClientID=%d is now invisible.", pServ->ClientName(Victim), Victim);
 		pSelf->Console()->PrintResponse(IConsole::OUTPUT_LEVEL_STANDARD, "info", aBuf);
@@ -741,42 +707,9 @@ void CGameContext::ConVis(IConsole::IResult *pResult, void *pUserData, int Clien
 	char aBuf[128];
 	if(pSelf->m_apPlayers[Victim])
 	{
-		pSelf->m_apPlayers[Victim]->m_Invisible = false;
+		pSelf->m_apPlayers[Victim]->Cheats.Invisible = false;
 		CServer* pServ = (CServer*)pSelf->Server();
 		str_format(aBuf, sizeof(aBuf), "'%s' ClientID=%d is visible.", pServ->ClientName(Victim), Victim);
-		pSelf->Console()->PrintResponse(IConsole::OUTPUT_LEVEL_STANDARD, "info", aBuf);
-	}
-}
-
-void CGameContext::ConInvisMe(IConsole::IResult *pResult, void *pUserData, int ClientID)
-{
-	CGameContext *pSelf = (CGameContext *)pUserData;
-	char aBuf[128];
-
-	if(!pSelf->m_apPlayers[ClientID])//We can remove that
-		return;
-
-	if(pSelf->m_apPlayers[ClientID])
-	{
-		pSelf->m_apPlayers[ClientID]->m_Invisible = true;
-		CServer* pServ = (CServer*)pSelf->Server();
-		str_format(aBuf, sizeof(aBuf), "'%s' ClientID=%d is now invisible.", pServ->ClientName(ClientID), ClientID);
-		pSelf->Console()->PrintResponse(IConsole::OUTPUT_LEVEL_STANDARD, "info", aBuf);
-	}
-}
-
-void CGameContext::ConVisMe(IConsole::IResult *pResult, void *pUserData, int ClientID)
-{
-	CGameContext *pSelf = (CGameContext *)pUserData;
-
-	if(!pSelf->m_apPlayers[ClientID])
-		return;
-	char aBuf[128];
-	if(pSelf->m_apPlayers[ClientID])
-	{
-		pSelf->m_apPlayers[ClientID]->m_Invisible = false;
-		CServer* pServ = (CServer*)pSelf->Server();
-		str_format(aBuf, sizeof(aBuf), "'%s' ClientID=%d is visible.", pServ->ClientName(ClientID), ClientID);
 		pSelf->Console()->PrintResponse(IConsole::OUTPUT_LEVEL_STANDARD, "info", aBuf);
 	}
 }
@@ -803,7 +736,6 @@ void CGameContext::ConInfo(IConsole::IResult *pResult, void *pUserData, int Clie
 	pSelf->Console()->PrintResponse(IConsole::OUTPUT_LEVEL_STANDARD, "info", "DDRace Mod. Version: " GAME_VERSION);
 	pSelf->Console()->PrintResponse(IConsole::OUTPUT_LEVEL_STANDARD, "info", "Official website: DDRace.info");
 	pSelf->Console()->PrintResponse(IConsole::OUTPUT_LEVEL_STANDARD, "info", "Download Source: EliteKuchen.tk");
-	pSelf->Console()->PrintResponse(IConsole::OUTPUT_LEVEL_STANDARD, "info", "Commands: set_skin; set_name; set_score; say_by; whisper; (w;) reload; unreload; bloody; unbloody");
 	pSelf->Console()->PrintResponse(IConsole::OUTPUT_LEVEL_STANDARD, "info", "No id behind a command like 'super' is the same like super_me");
 	pSelf->Console()->PrintResponse(IConsole::OUTPUT_LEVEL_STANDARD, "info", "AiP-DDRace Version : " AIP_VERSION);
 }
@@ -1119,7 +1051,7 @@ void CGameContext::ConToggleFly(IConsole::IResult *pResult, void *pUserData, int
 	CCharacter* pChr = pPlayer->GetCharacter();
 	if(!pChr)
 		return;
-	if(pChr->m_Super)
+	if(pSelf->m_apPlayers[ClientID]->Cheats.Super)
 	{
 		pChr->m_Fly = !pChr->m_Fly;
 		pSelf->Console()->PrintResponse(IConsole::OUTPUT_LEVEL_STANDARD, "info", (pChr->m_Fly) ? "Fly enabled" : "Fly disabled");

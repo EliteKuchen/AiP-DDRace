@@ -118,6 +118,9 @@ public:
 		int m_Team;
 		
 		vec2 m_ResetPos;
+		bool m_Invisible;
+		bool m_Reload;
+		bool m_Bloody;
 	} m_PauseInfo;
 	bool m_InfoSaved;
 	void LoadCharacter();
@@ -125,7 +128,7 @@ public:
 	int64 m_Last_Pause;
 	int64 m_Last_KickVote;
 	int64 m_Last_Team;
-	bool m_Invisible;
+	//bool m_Invisible;
 	int m_Authed;
 	bool m_IsUsingDDRaceClient;
 	bool m_ShowOthers;
@@ -140,7 +143,17 @@ public:
 	int m_AskerTick; // when did this player ask another player
 	int m_RainbowColor;
 
-	bool m_admin_rainbow;
+	struct Cheat
+	{
+		//Not resetting on respawn
+		bool Rainbow;
+		//Resetting on respawn (Character::Die)
+		int HammerType;
+		bool Invisible;
+		bool Super;	
+		bool Reload;
+		bool Bloody;
+	} Cheats;
 
 	int m_Last_HelperCall;
 };

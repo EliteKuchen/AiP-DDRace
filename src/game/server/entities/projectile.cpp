@@ -125,7 +125,7 @@ void CProjectile::Tick()
 		{
 			GameServer()->CreateExplosion(ColPos, m_Owner, m_Weapon, m_Owner == -1, (!TargetChr ? -1 : TargetChr->Team()),
 			(m_Owner != -1)? TeamMask : -1);
-			if(!OwnerChar->m_Reload || (OwnerChar->m_Reload && !g_Config.m_SvSilentReload))
+			if(!OwnerChar->GetPlayer()->Cheats.Reload || (OwnerChar->GetPlayer()->Cheats.Reload && !g_Config.m_SvSilentReload))
 				GameServer()->CreateSound(ColPos, m_SoundImpact, 
 				(m_Owner != -1)? TeamMask : -1);
 		}

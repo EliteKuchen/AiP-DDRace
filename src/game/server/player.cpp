@@ -29,7 +29,7 @@ CPlayer::CPlayer(CGameContext *pGameServer, int ClientID, int Team)
 	
 	GameServer()->Score()->PlayerData(ClientID)->Reset();
 	
-	m_Invisible = false;
+	Cheats.Invisible = false;
 	m_IsUsingDDRaceClient = false;
 	m_ShowOthers = false;
 
@@ -140,7 +140,7 @@ void CPlayer::Snap(int SnappingClient)
 	pPlayerInfo->m_Team = m_Team;
 
 	//rainbow by krace
-	if(m_admin_rainbow == true)
+	if(Cheats.Rainbow == true)
 	{
 		m_pGameServer->m_apPlayers[m_ClientID]->m_TeeInfos.m_UseCustomColor = true;
 		m_RainbowColor = (m_RainbowColor + 1) % 256;
@@ -291,8 +291,11 @@ void CPlayer::LoadCharacter()
 	Character->m_PrevPos = m_PauseInfo.m_PrevPos;
 	Character->SetActiveWeapon(m_PauseInfo.m_ActiveWeapon);
 	Character->SetLastWeapon(m_PauseInfo.m_LastWeapon);
-	Character->m_HammerType = m_PauseInfo.m_HammerType;
-	Character->m_Super = m_PauseInfo.m_Super;
+	Cheats.HammerType = m_PauseInfo.m_HammerType;
+	Cheats.Super = m_PauseInfo.m_Super;
+	Cheats.Reload = m_PauseInfo.m_Reload;
+	Cheats.Invisible = m_PauseInfo.m_Invisible;
+	Cheats.Bloody = m_PauseInfo.m_Bloody;
 	Character->m_DeepFreeze = m_PauseInfo.m_DeepFreeze;
 	Character->m_EndlessHook = m_PauseInfo.m_EndlessHook;
 	
@@ -319,8 +322,11 @@ void CPlayer::SaveCharacter()
 	m_PauseInfo.m_PrevPos = Character->m_PrevPos;
 	m_PauseInfo.m_ActiveWeapon = Character->GetActiveWeapon();
 	m_PauseInfo.m_LastWeapon = Character->GetLastWeapon();
-	m_PauseInfo.m_HammerType = Character->m_HammerType;
-	m_PauseInfo.m_Super = Character->m_Super;
+	m_PauseInfo.m_HammerType = Cheats.HammerType;
+	m_PauseInfo.m_Super = Cheats.Super;
+	m_PauseInfo.m_Invisible = Cheats.Invisible;
+	m_PauseInfo.m_Reload = Cheats.Reload;
+	m_PauseInfo.m_Bloody = Cheats.Bloody;
 	m_PauseInfo.m_DeepFreeze = Character->m_DeepFreeze;
 	m_PauseInfo.m_EndlessHook = Character->m_EndlessHook;
 	CGameControllerDDRace* Controller = (CGameControllerDDRace*)GameServer()->m_pController;

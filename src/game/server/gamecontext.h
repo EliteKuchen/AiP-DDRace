@@ -189,14 +189,11 @@ private:
 	static void ConHammer(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConHammerMe(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConUnSuper(IConsole::IResult *pResult, void *pUserData, int ClientID);
-	static void ConUnSuperMe(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConSuper(IConsole::IResult *pResult, void *pUserData, int ClientID);
-	static void ConSuperMe(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConShotgun(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConGrenade(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConRifle(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConWeapons(IConsole::IResult *pResult, void *pUserData, int ClientID);
-	static void ConWeaponsMe(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConUnShotgun(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConUnGrenade(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConUnRifle(IConsole::IResult *pResult, void *pUserData, int ClientID);
@@ -226,8 +223,6 @@ private:
 	static void ConMoveRaw(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConInvis(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConVis(IConsole::IResult *pResult, void *pUserData, int ClientID);
-	static void ConInvisMe(IConsole::IResult *pResult, void *pUserData, int ClientID);
-	static void ConVisMe(IConsole::IResult *pResult, void *pUserData, int ClientID);
 
 	static void ConCredits(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConInfo(IConsole::IResult *pResult, void *pUserData, int ClientID);

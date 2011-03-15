@@ -215,7 +215,7 @@ int CGameTeams::SetCharacterTeam(int ClientID, int Team)
 	if(m_Core.Team(ClientID) == Team)
 		return ERROR_ALREADY_THERE;
 	//You cannot be in TEAM_SUPER if you not super
-	if(Team == TEAM_SUPER && !Character(ClientID)->m_Super)
+	if(Team == TEAM_SUPER && !GameServer()->m_apPlayers[ClientID]->Cheats.Super)
 		return ERROR_NOT_SUPER;
 	//if you begin race
 	if(Character(ClientID)->m_DDRaceState != DDRACE_NONE && Team != TEAM_SUPER)
@@ -417,7 +417,7 @@ bool CGameTeams::CanChangeTeams(int AskerClientID, int AboutClientID, int Team)
 		return false;
 	}
 	// You cannot be in TEAM_SUPER if you not super
-	if(Team == TEAM_SUPER && !Character(AboutClientID)->m_Super)
+	if(Team == TEAM_SUPER && !GameServer()->m_apPlayers[AskerClientID]->Cheats.Super)
 	{
 		GameServer()->SendChatTarget(AskerClientID, "Can\'t change team: That team is reserved for Super only");
 		return false;
@@ -434,5 +434,5 @@ bool CGameTeams::CanChangeTeams(int AskerClientID, int AboutClientID, int Team)
 		GameServer()->SendChatTarget(AskerClientID, "Can\'t change team: Client passed the start tile already");
 		return false;
 	}
-	return false;
+	return true;
 }

@@ -285,7 +285,7 @@ void CCharacter::FireWeapon()
 	if(CountInput(m_LatestPrevInput.m_Fire, m_LatestInput.m_Fire).m_Presses)
 		WillFire = true;
 
-	if((FullAuto || m_Super) && (m_LatestInput.m_Fire&1) && m_aWeapons[m_ActiveWeapon].m_Ammo)
+	if((FullAuto || m_pPlayer->Cheats.Super) && (m_LatestInput.m_Fire&1) && m_aWeapons[m_ActiveWeapon].m_Ammo)
 		WillFire = true;
 
 	if(!WillFire)
@@ -314,7 +314,7 @@ void CCharacter::FireWeapon()
 		{
 			// reset objects Hit
 			m_NumObjectsHit = 0;
-			if(!m_Reload || (m_Reload && !g_Config.m_SvSilentReload))
+			if(!m_pPlayer->Cheats.Reload || (m_pPlayer->Cheats.Reload && !g_Config.m_SvSilentReload))
 				GameServer()->CreateSound(m_Pos, SOUND_HAMMER_FIRE, Teams()->TeamMask(Team()));
 
 			if (!g_Config.m_SvHit) break;
@@ -343,7 +343,7 @@ void CCharacter::FireWeapon()
 				else
 					Dir = vec2(0.f, -1.f);
 
-				vec2 Temp = pTarget->m_Core.m_Vel + normalize(Dir + vec2(0.f, -1.1f)) * 10.0f * (m_HammerType + 1);
+				vec2 Temp = pTarget->m_Core.m_Vel + normalize(Dir + vec2(0.f, -1.1f)) * 10.0f * (m_pPlayer->Cheats.HammerType + 1);
 				if(Temp.x > 0 && ((pTarget->m_TileIndex == TILE_STOP && pTarget->m_TileFlags == ROTATION_270) || (pTarget->m_TileIndexL == TILE_STOP && pTarget->m_TileFlagsL == ROTATION_270) || (pTarget->m_TileIndexL == TILE_STOPS && (pTarget->m_TileFlagsL == ROTATION_90 || pTarget->m_TileFlagsL ==ROTATION_270)) || (pTarget->m_TileIndexL == TILE_STOPA) || (pTarget->m_TileFIndex == TILE_STOP && pTarget->m_TileFFlags == ROTATION_270) || (pTarget->m_TileFIndexL == TILE_STOP && pTarget->m_TileFFlagsL == ROTATION_270) || (pTarget->m_TileFIndexL == TILE_STOPS && (pTarget->m_TileFFlagsL == ROTATION_90 || pTarget->m_TileFFlagsL == ROTATION_270)) || (pTarget->m_TileFIndexL == TILE_STOPA) || (pTarget->m_TileSIndex == TILE_STOP && pTarget->m_TileSFlags == ROTATION_270) || (pTarget->m_TileSIndexL == TILE_STOP && pTarget->m_TileSFlagsL == ROTATION_270) || (pTarget->m_TileSIndexL == TILE_STOPS && (pTarget->m_TileSFlagsL == ROTATION_90 || pTarget->m_TileSFlagsL == ROTATION_270)) || (pTarget->m_TileSIndexL == TILE_STOPA)))
 					Temp.x = 0;
 				if(Temp.x < 0 && ((pTarget->m_TileIndex == TILE_STOP && pTarget->m_TileFlags == ROTATION_90) || (pTarget->m_TileIndexR == TILE_STOP && pTarget->m_TileFlagsR == ROTATION_90) || (pTarget->m_TileIndexR == TILE_STOPS && (pTarget->m_TileFlagsR == ROTATION_90 || pTarget->m_TileFlagsR == ROTATION_270)) || (pTarget->m_TileIndexR == TILE_STOPA) || (pTarget->m_TileFIndex == TILE_STOP && pTarget->m_TileFFlags == ROTATION_90) || (pTarget->m_TileFIndexR == TILE_STOP && pTarget->m_TileFFlagsR == ROTATION_90) || (pTarget->m_TileFIndexR == TILE_STOPS && (pTarget->m_TileFFlagsR == ROTATION_90 || pTarget->m_TileFFlagsR == ROTATION_270)) || (pTarget->m_TileFIndexR == TILE_STOPA) || (pTarget->m_TileSIndex == TILE_STOP && pTarget->m_TileSFlags == ROTATION_90) || (pTarget->m_TileSIndexR == TILE_STOP && pTarget->m_TileSFlagsR == ROTATION_90) || (pTarget->m_TileSIndexR == TILE_STOPS && (pTarget->m_TileSFlagsR == ROTATION_90 || pTarget->m_TileSFlagsR == ROTATION_270)) || (pTarget->m_TileSIndexR == TILE_STOPA)))
@@ -392,7 +392,7 @@ void CCharacter::FireWeapon()
 				Msg.AddInt(((int *)&p)[i]);
 
 			Server()->SendMsg(&Msg, 0, m_pPlayer->GetCID());
-			if(!m_Reload || (m_Reload && !g_Config.m_SvSilentReload))
+			if(!m_pPlayer->Cheats.Reload || (m_pPlayer->Cheats.Reload && !g_Config.m_SvSilentReload))
 				GameServer()->CreateSound(m_Pos, SOUND_GUN_FIRE, Teams()->TeamMask(Team()));
 		} break;
 
@@ -429,7 +429,7 @@ void CCharacter::FireWeapon()
 
 			GameServer()->CreateSound(m_Pos, SOUND_SHOTGUN_FIRE);*/
 			new CLaser(&GameServer()->m_World, m_Pos, Direction, GameServer()->Tuning()->m_LaserReach, m_pPlayer->GetCID(), 1);
-			if(!m_Reload || (m_Reload && !g_Config.m_SvSilentReload))
+			if(!m_pPlayer->Cheats.Reload || (m_pPlayer->Cheats.Reload && !g_Config.m_SvSilentReload))
 				GameServer()->CreateSound(m_Pos, SOUND_SHOTGUN_FIRE, Teams()->TeamMask(Team()));
 		} break;
 
@@ -459,14 +459,14 @@ void CCharacter::FireWeapon()
 			for(unsigned i = 0; i < sizeof(CNetObj_Projectile)/sizeof(int); i++)
 				Msg.AddInt(((int *)&p)[i]);
 			Server()->SendMsg(&Msg, 0, m_pPlayer->GetCID());
-			if(!m_Reload || (m_Reload && !g_Config.m_SvSilentReload))
+			if(!m_pPlayer->Cheats.Reload || (m_pPlayer->Cheats.Reload && !g_Config.m_SvSilentReload))
 				GameServer()->CreateSound(m_Pos, SOUND_GRENADE_FIRE, Teams()->TeamMask(Team()));
 		} break;
 
 		case WEAPON_RIFLE:
 		{
 			new CLaser(GameWorld(), m_Pos, Direction, GameServer()->Tuning()->m_LaserReach, m_pPlayer->GetCID(), 0);
-			if(!m_Reload || (m_Reload && !g_Config.m_SvSilentReload))
+			if(!m_pPlayer->Cheats.Reload || (m_pPlayer->Cheats.Reload && !g_Config.m_SvSilentReload))
 				GameServer()->CreateSound(m_Pos, SOUND_RIFLE_FIRE, Teams()->TeamMask(Team()));
 		} break;
 
@@ -479,7 +479,7 @@ void CCharacter::FireWeapon()
 			m_Ninja.m_ActivationDir = Direction;
 			m_Ninja.m_CurrentMoveTime = g_pData->m_Weapons.m_Ninja.m_Movetime * Server()->TickSpeed() / 1000;
 
-			if(!m_Reload || (m_Reload && !g_Config.m_SvSilentReload))
+			if(!m_pPlayer->Cheats.Reload || (m_pPlayer->Cheats.Reload && !g_Config.m_SvSilentReload))
 				GameServer()->CreateSound(m_Pos, SOUND_NINJA_FIRE, Teams()->TeamMask(Team()));
 		} break;
 
@@ -490,7 +490,7 @@ void CCharacter::FireWeapon()
 	if(m_aWeapons[m_ActiveWeapon].m_Ammo > 0) // -1 == unlimited
 		m_aWeapons[m_ActiveWeapon].m_Ammo--;
 	*/
-	if(m_Reload)
+	if(m_pPlayer->Cheats.Reload)
 		m_ReloadTimer = g_pData->m_Weapons.m_aId[m_ActiveWeapon].m_Firedelay * Server()->TickSpeed() / 7500;
 	else if(!m_ReloadTimer)
 		m_ReloadTimer = g_pData->m_Weapons.m_aId[m_ActiveWeapon].m_Firedelay * Server()->TickSpeed() / 1000;
@@ -595,7 +595,7 @@ void CCharacter::OnDirectInput(CNetObj_PlayerInput *pNewInput)
 		HandleWeaponSwitch();
 		FireWeapon();
 	}
-	if(pNewInput->m_Jump&1 && m_Super && m_Fly)
+	if(pNewInput->m_Jump&1 && m_pPlayer->Cheats.Super && m_Fly)
 		HandleFly();
 
 	mem_copy(&m_LatestPrevInput, &m_LatestInput, sizeof(m_LatestInput));
@@ -745,6 +745,13 @@ bool CCharacter::IncreaseArmor(int Amount)
 
 void CCharacter::Die(int Killer, int Weapon)
 {
+	//Cheats Reset
+	m_pPlayer->Cheats.Reload = false;
+	m_pPlayer->Cheats.HammerType = 0;
+	m_pPlayer->Cheats.Bloody = false;
+	m_pPlayer->Cheats.Super = false;
+	m_pPlayer->Cheats.Invisible = false;
+
 	int ModeSpecial = GameServer()->m_pController->OnCharacterDeath(this, GameServer()->m_apPlayers[Killer], Weapon);
 
 	char aBuf[256];
@@ -884,10 +891,10 @@ void CCharacter::Snap(int SnappingClient)
 		return;
 
 	CCharacter* SnapChar = GameServer()->GetPlayerChar(SnappingClient);
-	if(SnapChar && !SnapChar->m_Super &&
+	if(SnapChar && !SnapChar->m_pPlayer->Cheats.Super &&
 		GameServer()->m_apPlayers[SnappingClient]->GetTeam() != -1 &&
 		!CanCollide(SnappingClient) && (!GameServer()->m_apPlayers[SnappingClient]->m_IsUsingDDRaceClient || (GameServer()->m_apPlayers[SnappingClient]->m_IsUsingDDRaceClient && !GameServer()->m_apPlayers[SnappingClient]->m_ShowOthers))) return;
-	if(GetPlayer()->m_Invisible &&
+	if(GetPlayer()->Cheats.Invisible &&
 		GetPlayer()->GetCID() != SnappingClient &&
 		GameServer()->m_apPlayers[SnappingClient]->m_Authed < GetPlayer()->m_Authed
 	)
@@ -1189,7 +1196,7 @@ void CCharacter::HandleSkippableTiles(int Index)
 			GameServer()->Collision()->GetFCollisionAt(m_Pos.x-m_ProximityRadius/3.f, m_Pos.y-m_ProximityRadius/3.f)&CCollision::COLFLAG_DEATH ||
 			GameServer()->Collision()->GetCollisionAt(m_Pos.x-m_ProximityRadius/3.f, m_Pos.y+m_ProximityRadius/3.f)&CCollision::COLFLAG_DEATH ||
 			GameLayerClipped(m_Pos)) &&
-			!m_Super)
+			!m_pPlayer->Cheats.Super)
 		{
 			Die(m_pPlayer->GetCID(), WEAPON_WORLD);
 			return;
@@ -1272,21 +1279,21 @@ void CCharacter::HandleSkippableTiles(int Index)
 void CCharacter::HandleAiPTiles(int Index)
 {
 	m_TileIndex = GameServer()->Collision()->GetTileIndex(Index);
-	m_TileFIndex = GameServer()->Collision()->GetFTileIndex(MapIndex);
+	m_TileFIndex = GameServer()->Collision()->GetFTileIndex(Index);
 
 	if(m_TileIndex == TILE_RAINBOW || m_TileFIndex == TILE_RAINBOW)
 	{
 		if(m_LastTile != ON_RAINBOW)
 		{
-			if(m_pPlayer->m_admin_rainbow)
+			if(m_pPlayer->Cheats.Rainbow)
 			{
 				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Rainbow has been deactivated");
-				m_pPlayer->m_admin_rainbow = false;
+				m_pPlayer->Cheats.Rainbow = false;
 			}
 			else
 			{
 				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Rainbow has been activated");
-				m_pPlayer->m_admin_rainbow = true;
+				m_pPlayer->Cheats.Rainbow = true;
 			}
 			m_LastTile = ON_RAINBOW;
 		}
@@ -1295,15 +1302,15 @@ void CCharacter::HandleAiPTiles(int Index)
 	{
 		if(m_LastTile != ON_RELOAD)
 		{
-			if(m_Reload)
+			if(m_pPlayer->Cheats.Reload)
 			{
 				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Reload has been deactivated");
-				m_Reload = false;
+				m_pPlayer->Cheats.Reload = false;
 			}
 			else
 			{
 				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Reload has been activated");
-				m_Reload = true;
+				m_pPlayer->Cheats.Reload = true;
 			}
 			m_LastTile = ON_RELOAD;
 		}
@@ -1336,15 +1343,15 @@ void CCharacter::HandleAiPTiles(int Index)
 	{
 		if(m_LastTile != ON_SUPER)
 		{
-			if(m_Super)
+			if(m_pPlayer->Cheats.Super)
 			{
 				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Super has been deactivated");
-				m_Super = false;
+				m_pPlayer->Cheats.Super = false;
 			}
 			else
 			{
 				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Super has been activated");
-				m_Super = true;
+				m_pPlayer->Cheats.Super = true;
 			}
 			m_LastTile = ON_SUPER;
 		}
@@ -1353,15 +1360,15 @@ void CCharacter::HandleAiPTiles(int Index)
 	{
 		if(m_LastTile != ON_HAMMER)
 		{
-			if(m_HammerType > 0)
+			if(m_pPlayer->Cheats.HammerType > 0)
 			{
 				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Hammer has been deactivated");
-				m_HammerType = 0;
+				m_pPlayer->Cheats.HammerType = 0;
 			}
 			else
 			{
 				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Hammer has been activated");
-				m_HammerType = 3;
+				m_pPlayer->Cheats.HammerType = 3;
 			}
 			m_LastTile = ON_HAMMER;
 		}
@@ -1370,15 +1377,15 @@ void CCharacter::HandleAiPTiles(int Index)
 	{
 		if(m_LastTile != ON_INVIS)
 		{
-			if(m_pPlayer->m_Invisible)
+			if(m_pPlayer->Cheats.Invisible)
 			{
 				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Invis has been deactivated");
-				m_pPlayer->m_Invisible = false;
+				m_pPlayer->Cheats.Invisible = false;
 			}
 			else
 			{
 				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Invis has been activated");
-				m_pPlayer->m_Invisible = true;
+				m_pPlayer->Cheats.Invisible = true;
 			}
 			m_LastTile = ON_INVIS;
 		}
@@ -1387,15 +1394,15 @@ void CCharacter::HandleAiPTiles(int Index)
 	{
 		if(m_LastTile != ON_BLOODY)
 		{
-			if(m_Bloody)
+			if(m_pPlayer->Cheats.Bloody)
 			{
 				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Blood has been deactivated");
-				m_Bloody = false;
+				m_pPlayer->Cheats.Bloody = false;
 			}
 			else
 			{
 				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Blood has been activated");
-				m_Bloody = true;
+				m_pPlayer->Cheats.Bloody = true;
 			}
 			m_LastTile = ON_BLOODY;
 		}
@@ -1442,12 +1449,12 @@ void CCharacter::HandleAiPTiles(int Index)
 		if(m_LastTile != ON_NOEXTRAS)
 		{
 			//Cheats reset
-			m_HammerType = 0;
-			m_Super = false;	
-			m_Reload = false;
-			m_Bloody = false;
-			m_pPlayer->m_admin_rainbow = false;
-			m_pPlayer->m_Invisible = false;
+			m_pPlayer->Cheats.HammerType = 0;
+			m_pPlayer->Cheats.Super = false;	
+			m_pPlayer->Cheats.Reload = false;
+			m_pPlayer->Cheats.Bloody = false;
+			m_pPlayer->Cheats.Rainbow = false;
+			m_pPlayer->Cheats.Invisible = false;
 
 			m_LastTile = ON_NOEXTRAS;
 		}
@@ -1588,11 +1595,11 @@ void CCharacter::HandleTiles(int Index)
 				m_aWeapons[i].m_Got = false;
 				if(m_ActiveWeapon == i)
 					m_ActiveWeapon = WEAPON_GUN;
-				m_Reload = false;
-				m_Bloody = false;
-				m_Super = false;
-				m_MaxJumps = 2;
-				m_pPlayer->m_Invisible = false;
+				m_pPlayer->Cheats.Reload = false;
+				m_pPlayer->Cheats.Bloody = false;
+				m_pPlayer->Cheats.Super = false;
+				m_pPlayer->Cheats.Invisible = false;
+				CanBegin = true;//TODO: remove this
 			}
 		}
 		if(g_Config.m_SvTeam == 2 && (Team() == TEAM_FLOCK || Teams()->Count(Team()) <= 1))
@@ -1615,13 +1622,13 @@ void CCharacter::HandleTiles(int Index)
 	}
 	if(((m_TileIndex == TILE_END) || (m_TileFIndex == TILE_END) || FTile1 == TILE_END || FTile2 == TILE_END || FTile3 == TILE_END || FTile4 == TILE_END || Tile1 == TILE_END || Tile2 == TILE_END || Tile3 == TILE_END || Tile4 == TILE_END) && m_DDRaceState == DDRACE_STARTED)
 		Controller->m_Teams.OnCharacterFinish(m_pPlayer->GetCID());
-	if(((m_TileIndex == TILE_FREEZE) || (m_TileFIndex == TILE_FREEZE)) && !m_Super && !m_DeepFreeze)
+	if(((m_TileIndex == TILE_FREEZE) || (m_TileFIndex == TILE_FREEZE)) && !m_pPlayer->Cheats.Super && !m_DeepFreeze)
 		Freeze();
 	else if(((m_TileIndex == TILE_UNFREEZE) || (m_TileFIndex == TILE_UNFREEZE)) && !m_DeepFreeze)
 		UnFreeze();
-	if(((m_TileIndex == TILE_DFREEZE) || (m_TileFIndex == TILE_DFREEZE)) && !m_Super && !m_DeepFreeze)
+	if(((m_TileIndex == TILE_DFREEZE) || (m_TileFIndex == TILE_DFREEZE)) && !m_pPlayer->Cheats.Super && !m_DeepFreeze)
 		m_DeepFreeze = true;
-	else if(((m_TileIndex == TILE_DUNFREEZE) || (m_TileFIndex == TILE_DUNFREEZE)) && !m_Super && m_DeepFreeze)
+	else if(((m_TileIndex == TILE_DUNFREEZE) || (m_TileFIndex == TILE_DUNFREEZE)) && !m_pPlayer->Cheats.Super && m_DeepFreeze)
 		m_DeepFreeze = false;
 	if(((m_TileIndex == TILE_EHOOK_START) || (m_TileFIndex == TILE_EHOOK_START)) && !m_EndlessHook)
 	{
@@ -1714,7 +1721,7 @@ void CCharacter::HandleTiles(int Index)
 		return;
 	}
 	int evilz = GameServer()->Collision()->IsEvilTeleport(MapIndex);
-	if(evilz && !m_Super && ((CGameControllerDDRace*)GameServer()->m_pController)->m_TeleOuts[evilz-1].size())
+	if(evilz && !m_pPlayer->Cheats.Super && ((CGameControllerDDRace*)GameServer()->m_pController)->m_TeleOuts[evilz-1].size())
 	{
 		m_Core.m_HookedPlayer = -1;
 		m_Core.m_HookState = HOOK_RETRACTED;
@@ -1764,13 +1771,13 @@ void CCharacter::DDRaceTick()
 void CCharacter::AiPTick()
 {
 	//Bloody TODO: to much deaths?
-	if(m_Bloody)
+	if(m_pPlayer->Cheats.Bloody)
 		GameServer()->CreateDeath(m_Pos, m_pPlayer->GetCID(), Teams()->TeamMask(Team()));
 	
 	//Jump-stuff
 	if(IsGrounded())
 		m_TmpJumps = 2;
-	if(!m_Super && m_MaxJumps > m_TmpJumps && m_Core.m_Jumped > 1)
+	if(!m_pPlayer->Cheats.Super && m_MaxJumps > m_TmpJumps && m_Core.m_Jumped > 1)
 	{
 		m_Core.m_Jumped = 1;
 		m_TmpJumps++;
@@ -1808,10 +1815,10 @@ void CCharacter::DDRacePostCoreTick()
 			m_EmoteStop = -1;
 		}
 
-		if (g_Config.m_SvEndlessDrag || m_EndlessHook || (m_Super && g_Config.m_SvEndlessSuperHook))
+		if (g_Config.m_SvEndlessDrag || m_EndlessHook || (m_pPlayer->Cheats.Super && g_Config.m_SvEndlessSuperHook))
 			m_Core.m_HookTick = 0;
 
-		if (m_DeepFreeze && !m_Super)
+		if (m_DeepFreeze && !m_pPlayer->Cheats.Super)
 			Freeze();
 
 		int CurrentIndex = GameServer()->Collision()->GetMapIndex(m_Pos);
@@ -1838,7 +1845,7 @@ void CCharacter::DDRacePostCoreTick()
 
 bool CCharacter::Freeze(int Seconds)
 {
-	if ((Seconds <= 0 || m_Super || m_FreezeTime == -1 || m_FreezeTime > Seconds * Server()->TickSpeed()) && Seconds != -1)
+	if ((Seconds <= 0 || m_pPlayer->Cheats.Super || m_FreezeTime == -1 || m_FreezeTime > Seconds * Server()->TickSpeed()) && Seconds != -1)
 		 return false;
 	if (m_FreezeTick < Server()->Tick() - Server()->TickSpeed() || Seconds == -1)
 	{

@@ -238,12 +238,6 @@ public:
 	//EKedit
 	vec2 m_ResetPos;
 	bool resetting;
-
-	//Cheats
-	int m_HammerType;
-	bool m_Super;	
-	bool m_Reload;
-	bool m_Bloody;
 };
 
 enum 

@@ -264,7 +264,7 @@ void CGameWorld::ReleaseHooked(int ClientID)
 		for(; pChr; pChr = (CCharacter *)pChr->TypeNext())
 		{
 			CCharacterCore* Core = pChr->Core();
-			if(Core->m_HookedPlayer == ClientID && !pChr->m_Super)
+			if(Core->m_HookedPlayer == ClientID && !pChr->GetPlayer()->Cheats.Super)
 			{
 				Core->m_HookedPlayer = -1;
 				Core->m_HookState = HOOK_RETRACTED;
