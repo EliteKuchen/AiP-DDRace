@@ -81,6 +81,9 @@ void CProjectile::SetBouncing(int Value)
 
 void CProjectile::Tick()
 {
+	//if(!GameServer()->m_apPlayers[m_Owner] || !GameServer()->m_apPlayers[m_Owner]->GetCharacter())
+	//	GameServer()->m_World.DestroyEntity(this);
+
 	float Pt = (Server()->Tick()-m_StartTick-1)/(float)Server()->TickSpeed();
 	float Ct = (Server()->Tick()-m_StartTick)/(float)Server()->TickSpeed();
 	vec2 PrevPos = GetPos(Pt);
@@ -125,9 +128,11 @@ void CProjectile::Tick()
 		{
 			GameServer()->CreateExplosion(ColPos, m_Owner, m_Weapon, m_Owner == -1, (!TargetChr ? -1 : TargetChr->Team()),
 			(m_Owner != -1)? TeamMask : -1);
-			if(!OwnerChar->GetPlayer()->Cheats.Reload || (OwnerChar->GetPlayer()->Cheats.Reload && !g_Config.m_SvSilentReload))
-				GameServer()->CreateSound(ColPos, m_SoundImpact, 
-				(m_Owner != -1)? TeamMask : -1);
+			/*if(GameServer()->m_apPlayers[m_Owner] && GameServer()->m_apPlayers[m_Owner]->GetCharacter() && OwnerChar &&
+				!OwnerChar->GetPlayer()->Cheats.Reload || (OwnerChar->GetPlayer()->Cheats.Reload && !g_Config.m_SvSilentReload))*/
+			if(GameServer()->m_apPlayers[m_Owner] && OwnerChar &&
+				!GameServer()->m_apPlayers[m_Owner]->Cheats.Reload || (GameServer()->m_apPlayers[m_Owner]->Cheats.Reload && !g_Config.m_SvSilentReload))
+				GameServer()->CreateSound(ColPos, m_SoundImpact, (m_Owner != -1)? TeamMask : -1);
 		}
 		else if(TargetChr && m_Freeze && ((m_Layer == LAYER_SWITCH && GameServer()->Collision()->m_pSwitchers[m_Number].m_Status[TargetChr->Team()]) || m_Layer != LAYER_SWITCH))
 			TargetChr->Freeze();

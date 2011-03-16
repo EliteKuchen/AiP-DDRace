@@ -84,6 +84,28 @@ void CGameContext::ConClistChk(IConsole::IResult *pResult, void *pUserData, int 
 	pSelf->Console()->PrintResponse(IConsole::OUTPUT_LEVEL_STANDARD, "info", aBuf);
 }
 
+void CGameContext::ConDamage(IConsole::IResult *pResult, void *pUserData, int ClientID)
+{
+	CGameContext *pSelf = (CGameContext *)pUserData;
+	CCharacter* pChr = pSelf->GetPlayerChar(pResult->GetVictim());
+
+	if(!pChr)
+		return;
+
+	pSelf->m_apPlayers[pResult->GetVictim()]->Cheats.Damage = true;
+}
+
+void CGameContext::ConUnDamage(IConsole::IResult *pResult, void *pUserData, int ClientID)
+{
+	CGameContext *pSelf = (CGameContext *)pUserData;
+	CCharacter* pChr = pSelf->GetPlayerChar(pResult->GetVictim());
+
+	if(!pChr)
+		return;
+
+	pSelf->m_apPlayers[pResult->GetVictim()]->Cheats.Damage = false;
+}
+
 void CGameContext::ConBloody(IConsole::IResult *pResult, void *pUserData, int ClientID)
 {
 	CGameContext *pSelf = (CGameContext *)pUserData;

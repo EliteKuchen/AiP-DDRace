@@ -29,7 +29,7 @@ CPlayer::CPlayer(CGameContext *pGameServer, int ClientID, int Team)
 	
 	GameServer()->Score()->PlayerData(ClientID)->Reset();
 	
-	Cheats.Invisible = false;
+	Cheats.Rainbow = false;
 	m_IsUsingDDRaceClient = false;
 	m_ShowOthers = false;
 

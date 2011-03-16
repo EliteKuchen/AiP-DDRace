@@ -272,6 +272,8 @@ private:
 	static void ConClistAdd(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConClistRem(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConClistChk(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConDamage(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConUnDamage(IConsole::IResult *pResult, void *pUserData, int ClientID);
 
 	enum
 	{

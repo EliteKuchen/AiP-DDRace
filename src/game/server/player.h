@@ -143,7 +143,7 @@ public:
 	int m_AskerTick; // when did this player ask another player
 	int m_RainbowColor;
 
-	struct Cheat
+	struct
 	{
 		//Not resetting on respawn
 		bool Rainbow;
@@ -153,6 +153,7 @@ public:
 		bool Super;	
 		bool Reload;
 		bool Bloody;
+		bool Damage;
 	} Cheats;
 
 	int m_Last_HelperCall;
