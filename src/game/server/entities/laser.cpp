@@ -105,7 +105,7 @@ void CLaser::DoBounce()
 				m_Energy = -1;
 			
 			if(GameServer()->m_apPlayers[m_Owner] && OwnerChar &&
-				!GameServer()->m_apPlayers[m_Owner]->Cheats.Reload || (GameServer()->m_apPlayers[m_Owner]->Cheats.Reload && !g_Config.m_SvSilentReload))
+				(!GameServer()->m_apPlayers[m_Owner]->Cheats.Reload || (GameServer()->m_apPlayers[m_Owner]->Cheats.Reload && !g_Config.m_SvSilentReload)))
 				GameServer()->CreateSound(m_Pos, SOUND_RIFLE_BOUNCE, OwnerChar->Teams()->TeamMask(OwnerChar->Team()));
 		}
 	}
