@@ -148,6 +148,7 @@ private:
 	int m_LastTile;
 	int m_MaxJumps;
 	int m_TmpJumps;
+	bool m_PrevGrounded;
 public:
 	CGameTeams* Teams();
 	bool Freeze(int Time);

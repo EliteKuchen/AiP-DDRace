@@ -74,11 +74,14 @@ void CGameContext::ConClistRem(IConsole::IResult *pResult, void *pUserData, int 
 void CGameContext::ConClistChk(IConsole::IResult *pResult, void *pUserData, int ClientID)
 {
 	CGameContext *pSelf = (CGameContext *)pUserData;
+	char aBuf[128];
 
 	if(pSelf->ClanList->Check(pResult->GetVictim()))
-		dbg_msg("%s is on your ClanList", pSelf->Server()->ClientName(pResult->GetVictim()));
+		str_format(aBuf, sizeof(aBuf), "%s is on your ClanList", pSelf->Server()->ClientName(pResult->GetVictim()));
 	else	
-		dbg_msg("%s is !NOT! on your ClanList", pSelf->Server()->ClientName(pResult->GetVictim()));
+		str_format(aBuf, sizeof(aBuf), "%s is !NOT! on your ClanList", pSelf->Server()->ClientName(pResult->GetVictim()));
+	
+	pSelf->Console()->PrintResponse(IConsole::OUTPUT_LEVEL_STANDARD, "info", aBuf);
 }
 
 void CGameContext::ConBloody(IConsole::IResult *pResult, void *pUserData, int ClientID)

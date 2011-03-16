@@ -1276,206 +1276,6 @@ void CCharacter::HandleSkippableTiles(int Index)
 	}
 }
 
-void CCharacter::HandleAiPTiles(int Index)
-{
-	m_TileIndex = GameServer()->Collision()->GetTileIndex(Index);
-	m_TileFIndex = GameServer()->Collision()->GetFTileIndex(Index);
-
-	if(m_TileIndex == TILE_RAINBOW || m_TileFIndex == TILE_RAINBOW)
-	{
-		if(m_LastTile != ON_RAINBOW)
-		{
-			if(m_pPlayer->Cheats.Rainbow)
-			{
-				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Rainbow has been deactivated");
-				m_pPlayer->Cheats.Rainbow = false;
-			}
-			else
-			{
-				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Rainbow has been activated");
-				m_pPlayer->Cheats.Rainbow = true;
-			}
-			m_LastTile = ON_RAINBOW;
-		}
-	}
-	else if((m_TileIndex == TILE_RELOAD) || (m_TileFIndex == TILE_RELOAD))
-	{
-		if(m_LastTile != ON_RELOAD)
-		{
-			if(m_pPlayer->Cheats.Reload)
-			{
-				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Reload has been deactivated");
-				m_pPlayer->Cheats.Reload = false;
-			}
-			else
-			{
-				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Reload has been activated");
-				m_pPlayer->Cheats.Reload = true;
-			}
-			m_LastTile = ON_RELOAD;
-		}
-	}
-	else if((m_TileIndex == TILE_ADMIN) || (m_TileFIndex == TILE_ADMIN))
-	{
-		if(m_LastTile != ON_ADMIN)
-		{
-			m_LastTile = ON_ADMIN; //not necessary
-			if(m_pPlayer->m_Authed <= 1)
-			{
-				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"AdminZone!!!");
-				Die(GetPlayer()->GetCID(), WEAPON_GAME);
-			}
-		}
-	}
-	else if((m_TileIndex == TILE_MEMBER) || (m_TileFIndex == TILE_MEMBER))
-	{
-		if(m_LastTile != ON_MEMBER)
-		{
-			m_LastTile = ON_MEMBER; //not necessary
-			if(!GameServer()->ClanList->Check(GetPlayer()->GetCID()))
-			{
-				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"ClanZone!!!");
-				Die(GetPlayer()->GetCID(), WEAPON_GAME);
-			}
-		}
-	}
-	else if((m_TileIndex == TILE_SUPER) || (m_TileFIndex == TILE_SUPER))
-	{
-		if(m_LastTile != ON_SUPER)
-		{
-			if(m_pPlayer->Cheats.Super)
-			{
-				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Super has been deactivated");
-				m_pPlayer->Cheats.Super = false;
-			}
-			else
-			{
-				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Super has been activated");
-				m_pPlayer->Cheats.Super = true;
-			}
-			m_LastTile = ON_SUPER;
-		}
-	}
-	else if((m_TileIndex == TILE_HAMMER) || (m_TileFIndex == TILE_HAMMER))
-	{
-		if(m_LastTile != ON_HAMMER)
-		{
-			if(m_pPlayer->Cheats.HammerType > 0)
-			{
-				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Hammer has been deactivated");
-				m_pPlayer->Cheats.HammerType = 0;
-			}
-			else
-			{
-				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Hammer has been activated");
-				m_pPlayer->Cheats.HammerType = 3;
-			}
-			m_LastTile = ON_HAMMER;
-		}
-	}
-	else if((m_TileIndex == TILE_INVIS) || (m_TileFIndex == TILE_INVIS))
-	{
-		if(m_LastTile != ON_INVIS)
-		{
-			if(m_pPlayer->Cheats.Invisible)
-			{
-				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Invis has been deactivated");
-				m_pPlayer->Cheats.Invisible = false;
-			}
-			else
-			{
-				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Invis has been activated");
-				m_pPlayer->Cheats.Invisible = true;
-			}
-			m_LastTile = ON_INVIS;
-		}
-	}
-	else if((m_TileIndex == TILE_BLOODY) || (m_TileFIndex == TILE_BLOODY))
-	{
-		if(m_LastTile != ON_BLOODY)
-		{
-			if(m_pPlayer->Cheats.Bloody)
-			{
-				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Blood has been deactivated");
-				m_pPlayer->Cheats.Bloody = false;
-			}
-			else
-			{
-				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Blood has been activated");
-				m_pPlayer->Cheats.Bloody = true;
-			}
-			m_LastTile = ON_BLOODY;
-		}
-	}
-	else if((m_TileIndex == TILE_JMPRESET) || (m_TileFIndex == TILE_JMPRESET))
-	{
-		if(m_LastTile != ON_JMPRESET)
-		{
-			if(m_MaxJumps != 2)
-			{
-				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Max. Jumps : 2 (reset)");
-				m_MaxJumps = 2;
-			}
-			m_LastTile = ON_JMPRESET;
-		}
-	}
-	else if((m_TileIndex == TILE_JMPP) || (m_TileFIndex == TILE_JMPP))
-	{
-		if(m_LastTile != ON_JMPP)
-		{
-			m_MaxJumps++;
-			char aBuf[256];
-			str_format(aBuf, sizeof(aBuf), "Max. Jumps : %d (+1)", m_MaxJumps);
-			GameServer()->SendChatTarget(GetPlayer()->GetCID(),aBuf);
-			m_LastTile = ON_JMPP;
-		}
-	}
-	else if((m_TileIndex == TILE_JMPM) || (m_TileFIndex == TILE_JMPM))
-	{
-		if(m_LastTile != ON_JMPM)
-		{
-			if(m_MaxJumps >= 1)
-			{
-				m_MaxJumps--;
-				char aBuf[256];
-				str_format(aBuf, sizeof(aBuf), "Max. Jumps : %d (-1)", m_MaxJumps);
-				GameServer()->SendChatTarget(GetPlayer()->GetCID(),aBuf);
-			}
-			m_LastTile = ON_JMPM;
-		}
-	}
-	else if((m_TileIndex == TILE_NOEXTRAS) || (m_TileFIndex == TILE_NOEXTRAS))
-	{
-		if(m_LastTile != ON_NOEXTRAS)
-		{
-			//Cheats reset
-			m_pPlayer->Cheats.HammerType = 0;
-			m_pPlayer->Cheats.Super = false;	
-			m_pPlayer->Cheats.Reload = false;
-			m_pPlayer->Cheats.Bloody = false;
-			m_pPlayer->Cheats.Rainbow = false;
-			m_pPlayer->Cheats.Invisible = false;
-
-			m_LastTile = ON_NOEXTRAS;
-		}
-	}
-	else if((m_TileIndex == TILE_NONINJA) || (m_TileFIndex == TILE_NONINJA))
-	{
-		if(m_LastTile != ON_NONINJA && m_aWeapons[WEAPON_NINJA].m_Got)
-		{
-			m_aWeapons[WEAPON_NINJA].m_Got = false;
-			m_ActiveWeapon = m_LastWeapon;
-			if(m_ActiveWeapon == WEAPON_NINJA)
-				m_ActiveWeapon = WEAPON_GUN;
-			SetWeapon(m_ActiveWeapon);
-
-			m_LastTile = ON_NONINJA;
-		}
-	}
-	else if(GameServer()->Collision()->IsAir(m_Pos.x, m_Pos.y))
-		m_LastTile = ON_FREE;
-}
-
 void CCharacter::HandleTiles(int Index)
 {
 	CGameControllerDDRace* Controller = (CGameControllerDDRace*)GameServer()->m_pController;
@@ -1768,44 +1568,6 @@ void CCharacter::DDRaceTick()
 	m_Core.m_Id = GetPlayer()->GetCID();
 }
 
-void CCharacter::AiPTick()
-{
-	//Bloody TODO: to much deaths?
-	if(m_pPlayer->Cheats.Bloody)
-		GameServer()->CreateDeath(m_Pos, m_pPlayer->GetCID(), Teams()->TeamMask(Team()));
-	
-	//Jump-stuff
-	if(IsGrounded())
-		m_TmpJumps = 2;
-	if(!m_pPlayer->Cheats.Super && m_MaxJumps > m_TmpJumps && m_Core.m_Jumped > 1)
-	{
-		m_Core.m_Jumped = 1;
-		m_TmpJumps++;
-	}
-	if(m_MaxJumps == 1 && m_Core.m_Jumped)
-		m_Core.m_Jumped = 2;
-	else if(m_MaxJumps == 0)
-		m_Core.m_Jumped = 3;
-
-	//Rescue
-	if(resetting && m_ResetPos == vec2(0,0))
-		resetting = false;
-	if(IsGrounded() && m_FreezeTime <= 0 && m_Alive &&
-        m_TileIndex != TILE_FREEZE && m_TileFIndex != TILE_FREEZE &&
-        !m_DeepFreeze)
-		m_ResetPos = m_Pos;
-	else if(resetting)
-	{
-		GameServer()->CreateDeath(m_Pos, m_pPlayer->GetCID(), Teams()->TeamMask(Team())); //Rescue effect I (old position)
-		Core()->m_Vel = vec2(0,0);
-		Core()->m_Pos  = m_ResetPos;
-		UnFreeze();
-		resetting = !resetting;
-		GameServer()->CreatePlayerSpawn(m_ResetPos, 1); //Rescue effect II (new position)
-	}
-}
-
-
 void CCharacter::DDRacePostCoreTick()
 {
 	if (m_DefEmoteReset >= 0 && m_DefEmoteReset <= Server()->Tick())
@@ -1916,4 +1678,246 @@ void CCharacter::DDRaceInit()
 	}
 	m_DefEmote = EMOTE_NORMAL;
 	m_DefEmoteReset = -1;
+}
+
+void CCharacter::HandleAiPTiles(int Index)
+{
+	m_TileIndex = GameServer()->Collision()->GetTileIndex(Index);
+	m_TileFIndex = GameServer()->Collision()->GetFTileIndex(Index);
+
+	if(m_TileIndex == TILE_RAINBOW || m_TileFIndex == TILE_RAINBOW)
+	{
+		if(m_LastTile != ON_RAINBOW)
+		{
+			if(m_pPlayer->Cheats.Rainbow)
+			{
+				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Rainbow has been deactivated");
+				m_pPlayer->Cheats.Rainbow = false;
+			}
+			else
+			{
+				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Rainbow has been activated");
+				m_pPlayer->Cheats.Rainbow = true;
+			}
+			m_LastTile = ON_RAINBOW;
+		}
+	}
+	else if((m_TileIndex == TILE_RELOAD) || (m_TileFIndex == TILE_RELOAD))
+	{
+		if(m_LastTile != ON_RELOAD)
+		{
+			if(m_pPlayer->Cheats.Reload)
+			{
+				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Reload has been deactivated");
+				m_pPlayer->Cheats.Reload = false;
+			}
+			else
+			{
+				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Reload has been activated");
+				m_pPlayer->Cheats.Reload = true;
+			}
+			m_LastTile = ON_RELOAD;
+		}
+	}
+	else if((m_TileIndex == TILE_ADMIN) || (m_TileFIndex == TILE_ADMIN))
+	{
+		if(m_LastTile != ON_ADMIN)
+		{
+			m_LastTile = ON_ADMIN; //not necessary
+			if(m_pPlayer->m_Authed <= 1)
+			{
+				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"AdminZone!!!");
+				Die(GetPlayer()->GetCID(), WEAPON_GAME);
+			}
+		}
+	}
+	else if((m_TileIndex == TILE_MEMBER) || (m_TileFIndex == TILE_MEMBER))
+	{
+		if(m_LastTile != ON_MEMBER)
+		{
+			m_LastTile = ON_MEMBER; //not necessary
+			if(!GameServer()->ClanList->Check(GetPlayer()->GetCID()))
+			{
+				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"ClanZone!!!");
+				Die(GetPlayer()->GetCID(), WEAPON_GAME);
+			}
+		}
+	}
+	else if((m_TileIndex == TILE_SUPER) || (m_TileFIndex == TILE_SUPER))
+	{
+		if(m_LastTile != ON_SUPER)
+		{
+			if(m_pPlayer->Cheats.Super)
+			{
+				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Super has been deactivated");
+				m_pPlayer->Cheats.Super = false;
+			}
+			else
+			{
+				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Super has been activated");
+				m_pPlayer->Cheats.Super = true;
+			}
+			m_LastTile = ON_SUPER;
+		}
+	}
+	else if((m_TileIndex == TILE_HAMMER) || (m_TileFIndex == TILE_HAMMER))
+	{
+		if(m_LastTile != ON_HAMMER)
+		{
+			if(m_pPlayer->Cheats.HammerType > 0)
+			{
+				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Hammer has been deactivated");
+				m_pPlayer->Cheats.HammerType = 0;
+			}
+			else
+			{
+				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Hammer has been activated");
+				m_pPlayer->Cheats.HammerType = 3;
+			}
+			m_LastTile = ON_HAMMER;
+		}
+	}
+	else if((m_TileIndex == TILE_INVIS) || (m_TileFIndex == TILE_INVIS))
+	{
+		if(m_LastTile != ON_INVIS)
+		{
+			if(m_pPlayer->Cheats.Invisible)
+			{
+				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Invis has been deactivated");
+				m_pPlayer->Cheats.Invisible = false;
+			}
+			else
+			{
+				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Invis has been activated");
+				m_pPlayer->Cheats.Invisible = true;
+			}
+			m_LastTile = ON_INVIS;
+		}
+	}
+	else if((m_TileIndex == TILE_BLOODY) || (m_TileFIndex == TILE_BLOODY))
+	{
+		if(m_LastTile != ON_BLOODY)
+		{
+			if(m_pPlayer->Cheats.Bloody)
+			{
+				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Blood has been deactivated");
+				m_pPlayer->Cheats.Bloody = false;
+			}
+			else
+			{
+				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Blood has been activated");
+				m_pPlayer->Cheats.Bloody = true;
+			}
+			m_LastTile = ON_BLOODY;
+		}
+	}
+	else if((m_TileIndex == TILE_JMPRESET) || (m_TileFIndex == TILE_JMPRESET))
+	{
+		if(m_LastTile != ON_JMPRESET)
+		{
+			if(m_MaxJumps != 2)
+			{
+				GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Max. Jumps : 2 (reset)");
+				m_MaxJumps = 2;
+			}
+			m_LastTile = ON_JMPRESET;
+		}
+	}
+	else if((m_TileIndex == TILE_JMPP) || (m_TileFIndex == TILE_JMPP))
+	{
+		if(m_LastTile != ON_JMPP)
+		{
+			m_MaxJumps++;
+			char aBuf[256];
+			str_format(aBuf, sizeof(aBuf), "Max. Jumps : %d (+1)", m_MaxJumps);
+			GameServer()->SendChatTarget(GetPlayer()->GetCID(),aBuf);
+			m_LastTile = ON_JMPP;
+		}
+	}
+	else if((m_TileIndex == TILE_JMPM) || (m_TileFIndex == TILE_JMPM))
+	{
+		if(m_LastTile != ON_JMPM)
+		{
+			if(m_MaxJumps >= 1)
+			{
+				m_MaxJumps--;
+				char aBuf[256];
+				str_format(aBuf, sizeof(aBuf), "Max. Jumps : %d (-1)", m_MaxJumps);
+				GameServer()->SendChatTarget(GetPlayer()->GetCID(),aBuf);
+			}
+			m_LastTile = ON_JMPM;
+		}
+	}
+	else if((m_TileIndex == TILE_NOEXTRAS) || (m_TileFIndex == TILE_NOEXTRAS))
+	{
+		if(m_LastTile != ON_NOEXTRAS)
+		{
+			//Cheats reset
+			m_pPlayer->Cheats.HammerType = 0;
+			m_pPlayer->Cheats.Super = false;	
+			m_pPlayer->Cheats.Reload = false;
+			m_pPlayer->Cheats.Bloody = false;
+			m_pPlayer->Cheats.Rainbow = false;
+			m_pPlayer->Cheats.Invisible = false;
+
+			m_LastTile = ON_NOEXTRAS;
+		}
+	}
+	else if((m_TileIndex == TILE_NONINJA) || (m_TileFIndex == TILE_NONINJA))
+	{
+		if(m_LastTile != ON_NONINJA && m_aWeapons[WEAPON_NINJA].m_Got)
+		{
+			m_aWeapons[WEAPON_NINJA].m_Got = false;
+			m_ActiveWeapon = m_LastWeapon;
+			if(m_ActiveWeapon == WEAPON_NINJA)
+				m_ActiveWeapon = WEAPON_GUN;
+			SetWeapon(m_ActiveWeapon);
+
+			m_LastTile = ON_NONINJA;
+		}
+	}
+	else if(GameServer()->Collision()->IsAir(m_Pos.x, m_Pos.y))
+		m_LastTile = ON_FREE;
+}
+
+void CCharacter::AiPTick()
+{
+	//Blood stuff
+	if(m_pPlayer->Cheats.Bloody)
+		GameServer()->CreateDeath(m_Pos, m_pPlayer->GetCID(), Teams()->TeamMask(Team()));
+	
+	//Jump stuff
+	if(IsGrounded())
+		m_TmpJumps = 2;
+	if(!m_pPlayer->Cheats.Super && m_MaxJumps > m_TmpJumps && m_Core.m_Jumped > 1)
+	{
+		m_Core.m_Jumped = 1;
+		m_TmpJumps++;
+	}
+	if(m_MaxJumps == 1 && m_Core.m_Jumped)
+		m_Core.m_Jumped = 2;
+	else if(m_MaxJumps == 0)
+		m_Core.m_Jumped = 3;
+
+	//Rescue
+	//Save Position
+	if(!m_FreezeTime && m_Pos && IsGrounded() &&//if not Freezed & on the ground
+		(m_Pos == m_PrevPos || (!m_PrevGrounded && IsGrounded())))//& doesn't moved or landing on the ground
+		m_ResetPos = Core()->m_Pos;//Save current Position
+	//Set Position
+	else if(resetting && m_ResetPos)//just reset if a rescue psotion is setted
+	{
+		GameServer()->CreateDeath(m_Pos, m_pPlayer->GetCID(), Teams()->TeamMask(Team())); //Rescue effect I (old position)
+		Core()->m_Vel = vec2(0,0);//Reset the acceleration
+		Core()->m_Pos  = m_ResetPos;//Reset Position
+		UnFreeze();//Unfreeze
+		GameServer()->CreatePlayerSpawn(m_ResetPos, 1); //Rescue effect II (new position)
+		resetting = false;//stop restting
+	}
+
+	//m_PrevGrounded stuff
+	if(IsGrounded())
+		m_PrevGrounded = true;
+	else
+		m_PrevGrounded = false;
 }

@@ -29,7 +29,7 @@ void CList::Load()
 void CList::Save()
 {
 	fstream f;
-	f.open(g_Config.m_SvClistFile, ios::in);
+	f.open(g_Config.m_SvClistFile, ios::out);
 	if(!f.fail())
 		for(list<CLItem>::iterator i=ClanList.begin(); i!=ClanList.end(); i++)
 			f << i->name() << endl << i->ip() << endl;
@@ -38,14 +38,14 @@ void CList::Save()
 
 void CList::Show()
 {
-	Load();//TODO: If laggy/crashing remove that
+	/*Load();//TODO: If laggy/crashing remove that
 	dbg_msg("CList", "Clanlisted users:");
 	for(list<CLItem>::iterator i=ClanList.begin(); i!=ClanList.end(); i++)
 	{
 			dbg_msg("CList", "User: %s", i->name().c_str());
 			dbg_msg("CList", "IP..: %s", i->ip().c_str());
 			dbg_msg("CList", "-------------");
-	}
+	}*/
 }
 
 bool CList::Check(int CId)
