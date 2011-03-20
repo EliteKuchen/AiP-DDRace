@@ -25,8 +25,8 @@ bool CLaser::HitCharacter(vec2 From, vec2 To)
 {
 	vec2 At;
 	CCharacter *OwnerChar = GameServer()->GetPlayerChar(m_Owner);
-	CCharacter *Hit = GameServer()->m_World.IntersectCharacter(m_Pos, To, 0.f, At, g_Config.m_SvOldLaser ? OwnerChar : m_Bounces != 0 ? 0: OwnerChar, m_Owner);
-	if(!Hit || (Hit == OwnerChar && g_Config.m_SvOldLaser))
+	CCharacter *Hit = GameServer()->m_World.IntersectCharacter(m_Pos, To, 0.f, At, g_Config.m_SvOldLaser || m_Bounces == 0 ? OwnerChar : 0, m_Owner, (g_Config.m_SvHit == 1) ? OwnerChar : 0);
+	if(!Hit || (Hit == OwnerChar && g_Config.m_SvOldLaser) || (Hit != OwnerChar && !g_Config.m_SvHit))
 		return false;
 	m_From = From;
 	m_Pos = At;

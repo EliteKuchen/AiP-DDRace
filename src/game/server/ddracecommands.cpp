@@ -106,6 +106,28 @@ void CGameContext::ConUnDamage(IConsole::IResult *pResult, void *pUserData, int 
 	pSelf->m_apPlayers[pResult->GetVictim()]->Cheats.Damage = false;
 }
 
+void CGameContext::ConIceHammer(IConsole::IResult *pResult, void *pUserData, int ClientID)
+{
+	CGameContext *pSelf = (CGameContext *)pUserData;
+	CCharacter* pChr = pSelf->GetPlayerChar(pResult->GetVictim());
+
+	if(!pChr)
+		return;
+
+	pSelf->m_apPlayers[pResult->GetVictim()]->Cheats.IHammer = true;
+}
+
+void CGameContext::ConUnIceHammer(IConsole::IResult *pResult, void *pUserData, int ClientID)
+{
+	CGameContext *pSelf = (CGameContext *)pUserData;
+	CCharacter* pChr = pSelf->GetPlayerChar(pResult->GetVictim());
+
+	if(!pChr)
+		return;
+
+	pSelf->m_apPlayers[pResult->GetVictim()]->Cheats.IHammer = false;
+}
+
 void CGameContext::ConBloody(IConsole::IResult *pResult, void *pUserData, int ClientID)
 {
 	CGameContext *pSelf = (CGameContext *)pUserData;

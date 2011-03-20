@@ -147,13 +147,14 @@ public:
 	{
 		//Not resetting on respawn
 		bool Rainbow;
-		//Resetting on respawn (Character::Die)
+		//Resetting on respawn (Character::Die | search for "//Cheats Reset")
 		int HammerType;
 		bool Invisible;
 		bool Super;	
 		bool Reload;
 		bool Bloody;
 		bool Damage;
+		bool IHammer;//IceHammer
 	} Cheats;
 
 	int m_Last_HelperCall;

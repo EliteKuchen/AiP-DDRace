@@ -128,10 +128,8 @@ void CProjectile::Tick()
 		{
 			GameServer()->CreateExplosion(ColPos, m_Owner, m_Weapon, m_Owner == -1, (!TargetChr ? -1 : TargetChr->Team()),
 			(m_Owner != -1)? TeamMask : -1);
-			/*if(GameServer()->m_apPlayers[m_Owner] && GameServer()->m_apPlayers[m_Owner]->GetCharacter() && OwnerChar &&
-				!OwnerChar->GetPlayer()->Cheats.Reload || (OwnerChar->GetPlayer()->Cheats.Reload && !g_Config.m_SvSilentReload))*/
 			if(GameServer()->m_apPlayers[m_Owner] && OwnerChar &&
-				!GameServer()->m_apPlayers[m_Owner]->Cheats.Reload || (GameServer()->m_apPlayers[m_Owner]->Cheats.Reload && !g_Config.m_SvSilentReload))
+				(!GameServer()->m_apPlayers[m_Owner]->Cheats.Reload || (GameServer()->m_apPlayers[m_Owner]->Cheats.Reload && !g_Config.m_SvSilentReload)))
 				GameServer()->CreateSound(ColPos, m_SoundImpact, (m_Owner != -1)? TeamMask : -1);
 		}
 		else if(TargetChr && m_Freeze && ((m_Layer == LAYER_SWITCH && GameServer()->Collision()->m_pSwitchers[m_Number].m_Status[TargetChr->Team()]) || m_Layer != LAYER_SWITCH))

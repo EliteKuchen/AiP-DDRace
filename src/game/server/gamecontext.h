@@ -274,6 +274,8 @@ private:
 	static void ConClistChk(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConDamage(IConsole::IResult *pResult, void *pUserData, int ClientID);
 	static void ConUnDamage(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConIceHammer(IConsole::IResult *pResult, void *pUserData, int ClientID);
+	static void ConUnIceHammer(IConsole::IResult *pResult, void *pUserData, int ClientID);
 
 	enum
 	{

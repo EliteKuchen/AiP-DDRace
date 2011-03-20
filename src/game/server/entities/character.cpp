@@ -355,7 +355,7 @@ void CCharacter::FireWeapon()
 				Temp -= pTarget->m_Core.m_Vel;
 				pTarget->TakeDamage(vec2(0.f, -1.f) + Temp, g_pData->m_Weapons.m_Hammer.m_pBase->m_Damage,
 					m_pPlayer->GetCID(), m_ActiveWeapon);
-				pTarget->UnFreeze();
+				m_pPlayer->Cheats.IHammer ? pTarget->Freeze() : pTarget->UnFreeze();
 				Hits++;
 			}
 
@@ -752,6 +752,7 @@ void CCharacter::Die(int Killer, int Weapon)
 	m_pPlayer->Cheats.Super = false;
 	m_pPlayer->Cheats.Invisible = false;
 	m_pPlayer->Cheats.Damage = false;
+	m_pPlayer->Cheats.IHammer = false;
 
 	int ModeSpecial = GameServer()->m_pController->OnCharacterDeath(this, GameServer()->m_apPlayers[Killer], Weapon);
 
@@ -1393,10 +1394,12 @@ void CCharacter::HandleTiles(int Index)
 				m_aWeapons[i].m_Got = false;
 				if(m_ActiveWeapon == i)
 					m_ActiveWeapon = WEAPON_GUN;
+				//Cheats Reset
 				m_pPlayer->Cheats.Reload = false;
 				m_pPlayer->Cheats.Bloody = false;
 				m_pPlayer->Cheats.Super = false;
 				m_pPlayer->Cheats.Invisible = false;
+				m_pPlayer->Cheats.IHammer = false;
 				CanBegin = true;//TODO: remove this
 			}
 		}
@@ -1857,6 +1860,7 @@ void CCharacter::HandleAiPTiles(int Index)
 			m_pPlayer->Cheats.Bloody = false;
 			m_pPlayer->Cheats.Rainbow = false;
 			m_pPlayer->Cheats.Invisible = false;
+			m_pPlayer->Cheats.IHammer = false;
 
 			m_LastTile = ON_NOEXTRAS;
 		}
