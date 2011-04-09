@@ -15,6 +15,7 @@
 #include "player.h"
 #include "score.h"
 #include "clist.h"
+#include "DeBugger.h"
 
 /*
 	Tick
@@ -68,6 +69,7 @@ class CGameContext : public IGameServer
 	bool m_VoteWillPass;
 public:
 	CList *ClanList;
+	DeBugger *WriteFile;
 	IServer *Server() const { return m_pServer; }
 	class IConsole *Console() { return m_pConsole; }
 	CCollision *Collision() { return &m_Collision; }

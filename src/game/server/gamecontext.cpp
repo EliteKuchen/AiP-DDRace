@@ -54,6 +54,7 @@ void CGameContext::Construct(int Resetting)
 	}
 
 	ClanList = new CList(this);
+	WriteFile = new DeBugger(this);
 }
 
 CGameContext::CGameContext(int Resetting)
