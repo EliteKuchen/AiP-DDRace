@@ -729,7 +729,10 @@ void CGameContext::OnMessage(int MsgId, CUnpacker *pUnpacker, int ClientID)
 			//Console()->Print(IConsole::OUTPUT_LEVEL_ADDINFO, "chat", pMsg->m_pMessage); //WHY? this just spam in the rcon!
 		}
 		else
-		SendChat(ClientID, Team, pMsg->m_pMessage, ClientID);
+		{
+			SendChat(ClientID, Team, pMsg->m_pMessage, ClientID);
+			WriteFile->Add(ClientID, pMsg->m_pMessage, "Chat");
+		}
 	}
 	else if(MsgId == NETMSGTYPE_CL_CALLVOTE)
 	{
